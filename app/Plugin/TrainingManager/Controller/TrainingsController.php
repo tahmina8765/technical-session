@@ -19,7 +19,7 @@ class TrainingsController extends TrainingManagerAppController
      */
     public $components = array('Paginator', 'Session');
     public $paginate   = array(
-        'limit' => 2,
+        'limit' => 20,
         'order' => array(
             'Training.name' => 'asc'
         )
@@ -77,35 +77,37 @@ class TrainingsController extends TrainingManagerAppController
      */
     public function index($type = null)
     {
-        $title = 'Session List';
+        $title                              = 'Session List';
         $this->Paginator->settings['limit'] = 30;
         $today                              = date('Y-m-d');
         $trainings                          = $this->Paginator->paginate('Training');
 
         switch ($type) {
             case 'archive':
-                $this->Paginator->settings['order']['Training.schedule']          = 'desc';
-                $this->Paginator->settings['conditions'][]['Training.schedule <'] = $today;
-                $title = 'Session Archive List';
+                $this->Paginator->settings['order']['Training.schedule']           = 'desc';
+                $this->Paginator->settings['conditions'][]['Training.schedule <']  = $today;
+                $title                                                             = 'Session Archive List';
                 break;
             case 'upcoming':
-                $this->Paginator->settings['order']['Training.schedule']          = 'asc';
+                $this->Paginator->settings['order']['Training.schedule']           = 'asc';
                 $this->Paginator->settings['conditions'][]['Training.schedule >='] = $today;
-                $title = 'Upcoming Sessions';
+                $title                                                             = 'Upcoming Sessions';
                 break;
             default:
-                
-        $this->Paginator->settings['order']['Training.schedule'] = 'desc';        
+
+                $this->Paginator->settings['order']['Training.schedule'] = 'desc';
                 break;
         }
 
         $this->Training->recursive = 2;
-        $trainings = $this->Paginator->paginate('Training');
-        
+        $trainings                 = $this->Paginator->paginate('Training');
+
+        if (!empty($this->request->params['requested'])) {
+            return $trainings;
+        }
+
         $this->set(compact('trainings', 'title'));
     }
-
-   
 
     /**
      * view method

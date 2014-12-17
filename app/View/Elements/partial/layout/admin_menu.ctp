@@ -1,6 +1,7 @@
 <ul class="nav navbar-nav">
     <li class="active"><a href="#">Home</a></li>
-    <li><?php echo $this->Html->link(__('Archive'), array('plugin' => 'training_manager', 'controller' => 'Trainings', 'action' => 'archive')); ?></li>
+    <li><?php echo $this->Html->link(__('Archive'), array('plugin' => 'training_manager', 'controller' => 'Trainings', 'action' => 'index', 'archive')); ?></li>
+    <li><?php echo $this->Html->link(__('Upcoming sessions'), array('plugin' => 'training_manager', 'controller' => 'Trainings', 'action' => 'index', 'upcoming')); ?></li>
     <li><a href="#">About</a></li>
     <li><a href="#">Contact</a></li>
     <li class="dropdown">

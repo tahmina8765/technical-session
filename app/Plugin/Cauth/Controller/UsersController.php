@@ -116,6 +116,7 @@ class UsersController extends CauthAppController {
      *  login method
      */
     public function login() {
+        $this->layout = 'login';
         if ($this->request->is('post')) {
             if ($this->Auth->login()) {
                 $this->redirect($this->Auth->redirect());
