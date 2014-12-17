@@ -83,18 +83,18 @@ class TrainingsController extends TrainingManagerAppController
      */
     public function index($type = null)
     {
-        $userId = 0;
-        $this->Session->destroy('Auth.besttopic');
+        $userId   = 0;
         $UserAuth = $this->Session->read('Auth');
         if (!empty($UserAuth)) {
             $userId = $this->Session->read('Auth.User.id');
         }
 
         $this->loadModel('Besttopic');
+        $besttopic = 0;
         if (!empty($userId)) {
             $result = $this->Besttopic->find('first', array('conditions' => array('AND' => array('Besttopic.user_id' => $userId))));
-            if(!empty($result)){
-                $this->Session->write('Auth.besttopic', $result['Besttopic']['training_id']);
+            if (!empty($result)) {
+                $besttopic = $result['Besttopic']['training_id'];
             }
         }
 
@@ -125,7 +125,10 @@ class TrainingsController extends TrainingManagerAppController
         $trainings                 = $this->Paginator->paginate('Training');
 
         if (!empty($this->request->params['requested'])) {
-            return $trainings;
+            return array(
+                'training' => $trainings,
+                'besttopic' => $besttopic
+            );
         }
 
         $this->set(compact('trainings', 'title'));

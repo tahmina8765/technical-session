@@ -16,10 +16,13 @@
     <h2 class="form-signin-heading">Please sign in</h2>
 
     <?php
-    echo $this->Form->input('User.username', array('label' => array('text' => 'Login ID', 'class' => 'sr-only'), 'class' => 'form-control', 'placeholder'=>"Username"));
-    echo $this->Form->input('User.password', array('label' => array('text' => 'Password', 'class' => 'sr-only'), 'class' => 'form-control', 'placeholder'=>"Password"));
+    echo $this->Form->input('User.username', array('label' => array('text' => 'Login ID', 'class' => 'sr-only'), 'class' => 'form-control', 'placeholder' => "Username"));
+    echo $this->Form->input('User.password', array('label' => array('text' => 'Password', 'class' => 'sr-only'), 'class' => 'form-control', 'placeholder' => "Password"));
     ?>
-    
+    <?php
+    echo $this->html->link('Forget Password? Click here', array('plugin' => 'cauth', 'controller' => 'users', 'action' => 'forgetPassword'));
+    ?>
+
     <div class="control-group">
         <div class="controls">
             <?php

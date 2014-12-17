@@ -1,15 +1,14 @@
-<?php
-$besttopic = (int) $this->Session->read('Auth.besttopic');
-?>
 <div class="panel panel-success">
     <div class="panel-heading text-center">
         <h3>Vote for your favorite session! </h3>
     </div>
     <div class="panel-body">
         <?php
-        $trainings = $this->requestAction(
+        $result = $this->requestAction(
                 'training_manager/Trainings/index/archive'
         );
+        $trainings = $result['training'];
+        $besttopic = $result['besttopic'];
         if (!empty($trainings)) {
             ?>
             <ul>

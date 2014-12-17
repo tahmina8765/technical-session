@@ -146,6 +146,7 @@ class UsersController extends CauthAppController {
      * @throws NotFoundException
      */
     public function changePassword($id = null, $password_change_code = null) {
+        $this->layout = 'login';
 
         $this->User->validate['password'] = array (
             'notempty'           => array (
@@ -230,6 +231,7 @@ class UsersController extends CauthAppController {
      */
 
     public function forgetPassword() {
+        $this->layout = 'login';
         $this->User->validate['username'] = array (
             'notempty'        => array (
                 'rule'       => array ('notempty'),
@@ -273,9 +275,9 @@ class UsersController extends CauthAppController {
                     $Email->from(array ('tahmina8765@yahoo.com' => 'Cauth'));
                     $Email->to($data['User']['email']);
                     $Email->subject('Forget Password Request');
-                    $link  = 'cauth/users/changePassword/' . $data['User']['id'] . '/' . $this->request->data['User']['password_change_code'];
+                    $link  = $this->siteURL().'/cauth/users/changePassword/' . $data['User']['id'] . '/' . $this->request->data['User']['password_change_code'];
                     $Email->send($link);
-                    $this->Session->setFlash(__($link));
+                    $this->Session->setFlash(__('Please check your email for next instruction.'));
                 } else {
                     $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
                 }
@@ -286,6 +288,14 @@ class UsersController extends CauthAppController {
 
         }
 
+    }
+    
+    
+    public function siteURL()
+    {
+        $protocol   = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+        $domainName = $_SERVER['HTTP_HOST'] ;
+        return $protocol . $domainName;
     }
 
 }
