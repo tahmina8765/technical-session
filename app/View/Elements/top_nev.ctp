@@ -9,29 +9,26 @@
             </button>
             <?php
             echo $this->Html->link(
-                    $this->Html->image('top-logo.png', array('alt' => 'Genweb2 Technical Session', 'border' => '0')), 'http://www.cakephp.org/', array('class' => 'navbar-brand', 'target' => '_blank', 'escape' => false, 'id' => 'cake-powered')
+                    $this->Html->image('top-logo.png', array('alt' => 'Genweb2 Technical Session', 'border' => '0')), '/', array('class' => 'navbar-brand', 'escape' => false, 'id' => 'cake-powered')
             );
             ?>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li><?php echo $this->Html->link(__('Archive'), array('plugin' => 'training_manager', 'controller' => 'Trainings', 'action' => 'archive')); ?></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li class="divider"></li>
-                        <li class="dropdown-header">Nav header</li>
-                        <li><a href="#">Separated link</a></li>
-                        <li><a href="#">One more separated link</a></li>
-                    </ul>
-                </li>
-            </ul>
+            <?php
+            $groupId = AuthComponent::user('group_id');
+            switch ($groupId) {
+                case 1:
+                    echo $this->element('partial/layout/admin_menu');
+                    break;
+                case 2:
+                    echo $this->element('partial/layout/user_menu');
+                    break;
+                default:
+                    echo $this->element('partial/layout/guest_menu');
+                    break;
+            }
+            ?>
+            
             <!-- Right Nav Section -->
             <ul class="nav navbar-nav navbar-right">
                 <?php
