@@ -25,11 +25,12 @@ class TrainingsController extends TrainingManagerAppController
         )
     );
 
-    public function beforeFilter() {
+    public function beforeFilter()
+    {
         parent::beforeFilter();
         $this->Auth->allow('index');
     }
-    
+
     /*
      * search page
      *
@@ -82,14 +83,30 @@ class TrainingsController extends TrainingManagerAppController
      */
     public function index($type = null)
     {
+        $userId = 0;
+        $this->Session->destroy('Auth.besttopic');
+        $UserAuth = $this->Session->read('Auth');
+        if (!empty($UserAuth)) {
+            $userId = $this->Session->read('Auth.User.id');
+        }
+
+        $this->loadModel('Besttopic');
+        if (!empty($userId)) {
+            $result = $this->Besttopic->find('first', array('conditions' => array('AND' => array('Besttopic.user_id' => $userId))));
+            if(!empty($result)){
+                $this->Session->write('Auth.besttopic', $result['Besttopic']['training_id']);
+            }
+        }
+
         $title                              = 'Session List';
         $this->Paginator->settings['limit'] = 30;
         $today                              = date('Y-m-d');
-        $trainings                          = $this->Paginator->paginate('Training');
+
+        $trainings = $this->Paginator->paginate('Training');
 
         switch ($type) {
             case 'archive':
-                $this->Paginator->settings['order']['Training.schedule']           = 'desc';
+                $this->Paginator->settings['order']['Training.schedule']           = 'asc';
                 $this->Paginator->settings['conditions'][]['Training.schedule <']  = $today;
                 $title                                                             = 'Session Archive List';
                 break;
@@ -116,6 +133,7 @@ class TrainingsController extends TrainingManagerAppController
 
     public function best_topic($id)
     {
+
         if (!$this->Training->exists($id)) {
             throw new NotFoundException(__('Invalid training'));
         }
@@ -131,16 +149,15 @@ class TrainingsController extends TrainingManagerAppController
             $result = $this->Besttopic->find('first', array('conditions' => array('AND' => array('Besttopic.user_id' => $userId))));
             if ($result) {
                 $this->Besttopic->id = $result['Besttopic']['id'];
-                $result = $this->Besttopic->save(array('user_id' => $userId, 'training_id' => $courseId));
-                $this->Session->setFlash(__('Thnk you for your vote.'));
+                $result              = $this->Besttopic->save(array('user_id' => $userId, 'training_id' => $courseId));
+//                $this->Session->setFlash(__('Think you for your vote.'));
             } else {
                 $result = $this->Besttopic->save(array('user_id' => $userId, 'training_id' => $courseId));
-                $this->Session->setFlash(__('Thnk you for your vote.'));
+//                $this->Session->setFlash(__('Think you for your vote.'));
             }
-            $this->Session->write('besttopic', $id);
+            $this->Session->write('Auth.besttopic', $id);
         }
         return $this->redirect('/');
-        
     }
 
     public function best_host($id)

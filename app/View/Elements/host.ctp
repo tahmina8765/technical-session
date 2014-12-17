@@ -1,30 +1,9 @@
-<style>
-    
-    .topic{
-        display: block; float: left; width: 18%; margin-right: 2%; margin-bottom: 2%;
-    }
-    .topic a{
-        color: white;
-    }
-    .topic div{
-        background: #2a2a2a;
-        display: block; height: 80px; border: 1px solid #f6f6f6;
-    }
-    .topic div a{
-        text-decoration: none;
-        color: white;
-    }
-    .best div{
-        background: green;
-        color: white;
-    }
-</style>
 <?php
-$besttopic = (int) $this->Session->read('besttopic');
+$besttopic = (int) $this->Session->read('Auth.besttopic');
 ?>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3>Vote to your favorite session :) </h3>
+<div class="panel panel-success">
+    <div class="panel-heading text-center">
+        <h3>Vote for your favorite session! </h3>
     </div>
     <div class="panel-body">
         <?php

@@ -1,3 +1,30 @@
+@import url(http://fonts.googleapis.com/css?family=Patua+One);
+
 .navbar-brand{
     padding: 5px 15px;
+}
+h1, h2, h3{
+    font-family: 'Slabo 27px', serif;
+}
+
+.topic{
+    display: block; float: left; width: 18%; margin-right: 2%; margin-bottom: 2%;
+}
+.topic a{
+    background: #fff;
+    text-decoration: none;
+    font-family: 'Patua One', cursive;
+}
+.topic a:hover{
+    background: #f2f2f2;
+}
+.topic div{
+    display: block; height: 80px; border: 1px solid #f6f6f6;
+}
+.topic.best a{
+    color: white;
+}
+.best div{
+    background: green;
+    color: white;
 }

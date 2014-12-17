@@ -19,6 +19,7 @@ $siteDescription = __d('cake_dev', 'Technical Session - genweb2');
         echo $this->fetch('css');
         echo $this->fetch('script');
         ?>
+        <link href='http://fonts.googleapis.com/css?family=Slabo+27px' rel='stylesheet' type='text/css'>
     </head>
     <body>
         <?php echo $this->element('top_nev'); ?>
