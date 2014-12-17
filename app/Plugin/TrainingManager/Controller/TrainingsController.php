@@ -25,6 +25,11 @@ class TrainingsController extends TrainingManagerAppController
         )
     );
 
+    public function beforeFilter() {
+        parent::beforeFilter();
+        $this->Auth->allow('index');
+    }
+    
     /*
      * search page
      *
@@ -107,6 +112,40 @@ class TrainingsController extends TrainingManagerAppController
         }
 
         $this->set(compact('trainings', 'title'));
+    }
+
+    public function best_topic($id)
+    {
+        if (!$this->Training->exists($id)) {
+            throw new NotFoundException(__('Invalid training'));
+        }
+        $userId   = 0;
+        $courseId = $id;
+        $UserAuth = $this->Session->read('Auth');
+        if (!empty($UserAuth)) {
+            $userId = $this->Session->read('Auth.User.id');
+        }
+
+        $this->loadModel('Besttopic');
+        if (!empty($courseId) && !empty($userId)) {
+            $result = $this->Besttopic->find('first', array('conditions' => array('AND' => array('Besttopic.user_id' => $userId))));
+            if ($result) {
+                $this->Besttopic->id = $result['Besttopic']['id'];
+                $result = $this->Besttopic->save(array('user_id' => $userId, 'training_id' => $courseId));
+                $this->Session->setFlash(__('Thnk you for your vote.'));
+            } else {
+                $result = $this->Besttopic->save(array('user_id' => $userId, 'training_id' => $courseId));
+                $this->Session->setFlash(__('Thnk you for your vote.'));
+            }
+            $this->Session->write('besttopic', $id);
+        }
+        return $this->redirect('/');
+        
+    }
+
+    public function best_host($id)
+    {
+        
     }
 
     /**
