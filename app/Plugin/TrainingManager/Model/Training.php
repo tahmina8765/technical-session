@@ -44,19 +44,6 @@ class Training extends TrainingManagerAppModel
      * @var array
      */
     public $hasMany = array(
-        'Poll'         => array(
-            'className'    => 'Poll',
-            'foreignKey'   => 'training_id',
-            'dependent'    => false,
-            'conditions'   => '',
-            'fields'       => '',
-            'order'        => '',
-            'limit'        => '',
-            'offset'       => '',
-            'exclusive'    => '',
-            'finderQuery'  => '',
-            'counterQuery' => ''
-        ),
         'TrainingUser' => array(
             'className'    => 'TrainingUser',
             'foreignKey'   => 'training_id',
