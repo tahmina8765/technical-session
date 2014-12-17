@@ -1,0 +1,18 @@
+{
+  "name": "technical-session",
+  "version": "1.0.0",
+  "authors": [
+    "tahmina8765 <tahmina8765@yahoo.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-sass-official": "~3.3.1"
+  }
+}
