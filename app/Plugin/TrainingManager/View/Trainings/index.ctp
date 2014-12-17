@@ -1,5 +1,47 @@
 <div class="trainings index">
     <h2><?php echo __($title); ?></h2>
+    <?php
+    foreach ($trainings as $training) {
+        ?>
+        <div class="panel panel-default">    
+            <div class="panel-heading">
+                <strong><?php echo h($training['Training']['title']); ?></strong>
+            </div>
+            <div class="panel-body">         
+                <div class="row">
+                    <div class="col-sm-9">
+                        <p><?php
+                            if (!empty($training['TrainingUser'])) {
+                                $users = array();
+                                foreach ($training['TrainingUser'] as $user) {
+                                    $users[] = $user['User']['name'];
+                                }
+                                $user = implode(',', $users);
+                                echo 'Host - ' . $user;
+                            }
+                            ?>
+                            <br>
+                            <i>
+                            <?php
+                            
+                            if (!empty($training['Training']['schedule'])) {
+
+                                echo $this->Time->format(
+                                        'F jS, Y', $training['Training']['schedule'], null
+                                );
+                            }
+                            ?>
+                            </i>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <?php
+    }
+    /*
+    ?>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -21,7 +63,7 @@
                         //          echo h($training['Training']['schedule']); 
                         ?>&nbsp;</td>
                 </tr>
-            <?php endforeach; ?>
+<?php endforeach; ?>
         </tbody>
     </table>
     <p>
@@ -38,3 +80,5 @@
         ?>
     </div>
 </div>
+
+*/
