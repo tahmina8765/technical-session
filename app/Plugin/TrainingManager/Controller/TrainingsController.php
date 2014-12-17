@@ -99,8 +99,9 @@ class TrainingsController extends TrainingManagerAppController
                 break;
         }
 
+        $this->Training->recursive = 2;
         $trainings = $this->Paginator->paginate('Training');
-        $this->Training->recursive = 3;
+        
         $this->set(compact('trainings', 'title'));
     }
 
