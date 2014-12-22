@@ -162,7 +162,7 @@ class TrainingsController extends TrainingManagerAppController
                 }
                 if (in_array($userId, $trainers)) {
                     $valid = false;
-                    $this->Session->setFlash(__('Opps! you can not vote for your own training.', 'error'));
+                    $this->Session->setFlash(__('Opps! you can not vote for your own session.'), 'error');
                 }
             }
             if ($result && $training && $valid) {
