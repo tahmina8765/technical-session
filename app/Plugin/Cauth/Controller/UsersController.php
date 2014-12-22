@@ -289,7 +289,7 @@ class UsersController extends CauthAppController
 
                 if ($this->User->save($this->request->data)) {
                     $Email = new CakeEmail();
-                    $Email->from(array('tahmina8765@yahoo.com' => 'Cauth'));
+                    $Email->from(array('info@genweb2.com' => 'Technical Session'));
                     $Email->to($data['User']['email']);
                     $Email->subject('Forget Password Request');
                     $retriveurl = $this->siteURL() . '/cauth/users/changePassword/' . $data['User']['id'] . '/' . $this->request->data['User']['password_access_token'];
