@@ -126,7 +126,7 @@ class TrainingsController extends TrainingManagerAppController
 
         if (!empty($this->request->params['requested'])) {
             return array(
-                'training' => $trainings,
+                'training'  => $trainings,
                 'besttopic' => $besttopic
             );
         }
@@ -148,17 +148,31 @@ class TrainingsController extends TrainingManagerAppController
         }
 
         $this->loadModel('Besttopic');
+
         if (!empty($courseId) && !empty($userId)) {
-            $result = $this->Besttopic->find('first', array('conditions' => array('AND' => array('Besttopic.user_id' => $userId))));
-            if ($result) {
-                $this->Besttopic->id = $result['Besttopic']['id'];
-                $result              = $this->Besttopic->save(array('user_id' => $userId, 'training_id' => $courseId));
-//                $this->Session->setFlash(__('Think you for your vote.'));
-            } else {
-                $result = $this->Besttopic->save(array('user_id' => $userId, 'training_id' => $courseId));
-//                $this->Session->setFlash(__('Think you for your vote.'));
+            $result   = $this->Besttopic->find('first', array('conditions' => array('AND' => array('Besttopic.user_id' => $userId))));
+            $options  = array('conditions' => array('Training.' . $this->Training->primaryKey => $courseId));
+            $training = $this->Training->find('first', $options);
+            // Check Validation
+            $valid    = true;
+            if (!empty($training['TrainingUser'])) {
+                $trainers = array();
+                foreach ($training['TrainingUser'] as $trainer) {
+                    $trainers[] = $trainer['user_id'];
+                }
+                if (in_array($userId, $trainers)) {
+                    $valid = false;
+                    $this->Session->setFlash(__('Opps! you can not vote for your own training.', 'error'));
+                }
             }
-            $this->Session->write('Auth.besttopic', $id);
+            if ($result && $training && $valid) {
+                $this->Besttopic->id = $result['Besttopic']['id'];
+                $result              = $this->Besttopic->save(array('user_id' => $userId, 'training_id' => $courseId));                
+                $this->Session->setFlash(__('Think you for your valuable vote.'), 'success');
+            } else if ($training && $valid) {
+                $result = $this->Besttopic->save(array('user_id' => $userId, 'training_id' => $courseId));
+                $this->Session->setFlash(__('Think you for your valuable vote.'), 'success');
+            }
         }
         return $this->redirect('/');
     }

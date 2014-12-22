@@ -2,6 +2,12 @@
 
 App::uses('AppController', 'Controller');
 
-class TrainingManagerAppController extends AppController {
+class TrainingManagerAppController extends AppController
+{
+
+    function beforeFilter()
+    {
+        parent::beforeFilter();
+    }
 
 }

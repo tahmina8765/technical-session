@@ -1,6 +1,5 @@
 @charset "UTF-8";
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
-@import url(http://fonts.googleapis.com/css?family=Patua+One);
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -6794,6 +6793,27 @@ button.close {
     display: none !important;
   }
 }
+@font-face {
+  font-family: 'Slabo 27px';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Slabo 27px"), local("Slabo27px-Regular"), url(../fonts/LfR9_S_HMdQ73mwIHBRxoSEAvth_LlrfE80CYdSH47w.woff2) format("woff2");
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Slabo 27px';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Slabo 27px"), local("Slabo27px-Regular"), url(../fonts/PuwvqkdbcqU-fCZ9Ed-b7SEAvth_LlrfE80CYdSH47w.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+@font-face {
+  font-family: 'Patua One';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Patua One"), local("PatuaOne-Regular"), url(../fonts/yAXhog6uK3bd3OwBILv_SBJtnKITppOI_IvcXXDNrsc.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
 .navbar-brand {
   padding: 5px 15px;
 }
@@ -6809,28 +6829,26 @@ h1, h2, h3 {
   margin-right: 2%;
   margin-bottom: 2%;
 }
-
 .topic a {
   background: #fff;
   text-decoration: none;
-  font-family: 'Patua One', cursive;
 }
-
 .topic a:hover {
   background: #f2f2f2;
 }
-
-.topic div {
-  display: block;
+.topic a .panel-heading {
+  text-align: center;
   height: 80px;
-  border: 1px solid #f6f6f6;
+  font-weight: bold;
 }
-
-.topic.best a {
-  color: white;
+.topic a .panel-footer {
+  text-align: center;
+  font-size: 85%;
+  font-weight: normal;
+  color: black;
 }
-
-.best div {
-  background: green;
-  color: white;
+.topic a .panel-success > .panel-footer {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
 }

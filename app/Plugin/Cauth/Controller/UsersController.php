@@ -54,10 +54,10 @@ class UsersController extends CauthAppController
         if ($this->request->is('post')) {
             $this->User->create();
             if ($this->User->save($this->request->data)) {
-                $this->Session->setFlash(__('The user has been saved'));
+                $this->Session->setFlash(__('The user has been saved'), 'success');
                 $this->redirect(array('action' => 'index'));
             } else {
-                $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+                $this->Session->setFlash(__('The user could not be saved. Please, try again.'), 'error');
             }
         }
         $groups = $this->User->Group->find('list');
@@ -78,10 +78,10 @@ class UsersController extends CauthAppController
         }
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->User->save($this->request->data)) {
-                $this->Session->setFlash(__('The user has been saved'));
+                $this->Session->setFlash(__('The user has been saved'), 'success');
                 $this->redirect(array('action' => 'index'));
             } else {
-                $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+                $this->Session->setFlash(__('The user could not be saved. Please, try again.'), 'error');
             }
         } else {
             $options             = array('conditions' => array('User.' . $this->User->primaryKey => $id));
@@ -107,10 +107,10 @@ class UsersController extends CauthAppController
         }
         $this->request->onlyAllow('post', 'delete');
         if ($this->User->delete()) {
-            $this->Session->setFlash(__('User deleted'));
+            $this->Session->setFlash(__('User deleted'), 'success');
             $this->redirect(array('action' => 'index'));
         }
-        $this->Session->setFlash(__('User was not deleted'));
+        $this->Session->setFlash(__('User was not deleted'), 'error');
         $this->redirect(array('action' => 'index'));
     }
 
@@ -122,13 +122,18 @@ class UsersController extends CauthAppController
         $this->layout = 'login';
         if ($this->request->is('post')) {
             if ($this->Auth->login()) {
+                $is_disabled = $this->Session->read('Auth.User.is_disabled');
+                if(!empty($is_disabled)){
+                    $this->Session->setFlash(__('Sorry! You are not an authorized user.'), 'error');
+                    $this->redirect($this->Auth->logout());
+                }                
                 $this->redirect($this->Auth->redirect());
             } else {
-                $this->Session->setFlash(__('Invalid username or password, try again'));
+                $this->Session->setFlash(__('Invalid username or password, try again'), 'error');
             }
         }
         if ($this->Session->read('Auth.User')) {
-            $this->Session->setFlash('You are logged in!');
+            $this->Session->setFlash('You are logged in!', 'success');
             $this->redirect('/', null, false);
         }
     }
@@ -138,7 +143,7 @@ class UsersController extends CauthAppController
      */
     public function logout()
     {
-        $this->Session->setFlash(__('You have successfully logged out from the system.'));
+        $this->Session->setFlash(__('You have successfully logged out from the system.'), 'success');
         $this->redirect($this->Auth->logout());
     }
 
@@ -300,9 +305,9 @@ Please click here to create a new password: $retriveurl
 Thanks!";
 
                     $Email->send($body);
-                    $this->Session->setFlash(__('Please check your email for next instruction.'));
+                    $this->Session->setFlash(__('Please check your email for next instruction.'), 'success');
                 } else {
-                    $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+                    $this->Session->setFlash(__('The user could not be saved. Please, try again.'), 'error');
                 }
             } else {
                 $this->Session->setFlash(__('Invalid username or email'), 'error');

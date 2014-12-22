@@ -19,13 +19,16 @@ $siteDescription = __d('cake_dev', 'Technical Session - genweb2');
         echo $this->fetch('css');
         echo $this->fetch('script');
         ?>
-        <link href='http://fonts.googleapis.com/css?family=Slabo+27px' rel='stylesheet' type='text/css'>
     </head>
     <body>
         <?php echo $this->element('top_nev'); ?>
         <!-- Static navbar -->
         <div class="container">
-            <?php echo $this->Session->flash(); ?>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <?php echo $this->Session->flash(); ?>
+                </div>                
+            </div>
             <?php echo $this->fetch('content'); ?>
             <?php
 //            echo $this->Html->link(
