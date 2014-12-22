@@ -5,9 +5,8 @@
 <br><br>
 <?php
 $result = $this->requestAction(
-        'training_manager/Trainings/index/vote'
+        'training_manager/Trainings/index/rank'
 );
-
 $trainings = $result['training'];
 $besttopic = (int) $result['besttopic'];
 if (!empty($trainings)) {

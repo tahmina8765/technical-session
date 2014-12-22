@@ -20,6 +20,7 @@
                                 echo 'Host - ' . $user;
                             }
                             ?>
+                            <span class="badge"><?php echo h($training['Training']['point']); ?></span>
                             <br>
                             <i>
                             <?php

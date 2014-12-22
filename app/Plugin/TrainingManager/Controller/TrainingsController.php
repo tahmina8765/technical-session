@@ -102,11 +102,16 @@ class TrainingsController extends TrainingManagerAppController
         $this->Paginator->settings['limit'] = 30;
         $today                              = date('Y-m-d');
 
-        $trainings = $this->Paginator->paginate('Training');
+        // $trainings = $this->Paginator->paginate('Training');
 
         switch ($type) {
-            case 'archive':
+            case 'vote':
                 $this->Paginator->settings['order']['Training.schedule']           = 'asc';
+                $this->Paginator->settings['conditions'][]['Training.schedule <']  = $today;
+                $title                                                             = 'Session Archive List';
+                break;
+            case 'archive':
+                $this->Paginator->settings['order']['Training.schedule']           = 'desc';
                 $this->Paginator->settings['conditions'][]['Training.schedule <']  = $today;
                 $title                                                             = 'Session Archive List';
                 break;
@@ -115,9 +120,16 @@ class TrainingsController extends TrainingManagerAppController
                 $this->Paginator->settings['conditions'][]['Training.schedule >='] = $today;
                 $title                                                             = 'Upcoming Sessions';
                 break;
+            case 'rank':
+                $this->Training->virtualFields                                     = array(
+                    'point' => 'training_rank (Training.id)',
+                );
+                $this->Paginator->settings['order']                                = array('Training.point' => 'desc');
+                $this->Paginator->settings['conditions'][]['Training.schedule <']  = $today;
+                $title                                                             = 'Rank';
+                break;
             default:
-
-                $this->Paginator->settings['order']['Training.schedule'] = 'desc';
+                $this->Paginator->settings['order']['Training.schedule']           = 'desc';
                 break;
         }
 
@@ -167,7 +179,7 @@ class TrainingsController extends TrainingManagerAppController
             }
             if ($result && $training && $valid) {
                 $this->Besttopic->id = $result['Besttopic']['id'];
-                $result              = $this->Besttopic->save(array('user_id' => $userId, 'training_id' => $courseId));                
+                $result              = $this->Besttopic->save(array('user_id' => $userId, 'training_id' => $courseId));
                 $this->Session->setFlash(__('Think you for your valuable vote.'), 'success');
             } else if ($training && $valid) {
                 $result = $this->Besttopic->save(array('user_id' => $userId, 'training_id' => $courseId));
@@ -407,3 +419,15 @@ class TrainingsController extends TrainingManagerAppController
     }
 
 }
+
+/*
+DROP FUNCTION `training_rank`;
+DELIMITER $$
+CREATE FUNCTION `training_rank`(id int) RETURNS int
+BEGIN
+DECLARE output int;
+SET output = (SELECT COUNT(*) FROM besttopics WHERE besttopics.training_id = id);
+RETURN output;
+END
+ * 
+ */
