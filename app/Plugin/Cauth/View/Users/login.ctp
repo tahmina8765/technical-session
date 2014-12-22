@@ -26,7 +26,7 @@
     <div class="control-group">
         <div class="controls">
             <?php
-            echo $this->Form->button('Login', array('type' => 'submit', 'class' => 'btn btn-lg btn-primary btn-block', 'div' => false));
+            echo $this->Form->button('Login', array('type' => 'submit', 'class' => 'btn btn-lg btn-success btn-block', 'div' => false));
             ?>
         </div>
     </div>

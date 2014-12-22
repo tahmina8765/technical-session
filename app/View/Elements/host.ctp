@@ -7,8 +7,9 @@
         $result = $this->requestAction(
                 'training_manager/Trainings/index/archive'
         );
+        
         $trainings = $result['training'];
-        $besttopic = $result['besttopic'];
+        $besttopic = (int) $result['besttopic'];
         if (!empty($trainings)) {
             ?>
             <ul>

@@ -43,8 +43,13 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
                 <div class="col-md-12 text-center">
                     <?php echo $this->Session->flash(); ?>
                 </div>                
-            </div>            
-            <?php echo $this->fetch('content'); ?>
+            </div>  
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <?php echo $this->fetch('content'); ?>
+                </div>                
+            </div>   
+            
         </div>
     </body>
 </html>
