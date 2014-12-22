@@ -1,7 +1,7 @@
 <div class="users form">
     <?php
     echo $this->Form->create('User', array(
-        'class'         => 'form-horizontal',
+        'class'         => 'form-signin',
         'inputDefaults' => array(
             'format'  => array('before', 'label', 'between', 'input', 'error', 'after'),
             'div'     => array('class' => 'control-group'),

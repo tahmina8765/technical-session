@@ -1,37 +1,36 @@
 <div class="users form">
     <?php
-    echo $this->Form->create('User', array (
-        'class'         => 'form-horizontal',
-        'inputDefaults' => array (
-            'format'  => array ('before', 'label', 'between', 'input', 'error', 'after'),
-            'div'     => array ('class' => 'control-group'),
-            'label'   => array ('class' => 'control-label'),
+    echo $this->Form->create('User', array(
+        'class'         => 'form-signin',
+        'inputDefaults' => array(
+            'format'  => array('before', 'label', 'between', 'input', 'error', 'after'),
+            'div'     => array('class' => 'control-group'),
+            'label'   => array('class' => 'sr-only'),
             'between' => '<div class="controls">',
             'after'   => '</div>',
-            'error'   => array ('attributes' => array ('wrap'  => 'span', 'class' => 'help-inline')),
+            'error'   => array('attributes' => array('wrap' => 'span', 'class' => 'help-inline')),
         )
     ));
     ?>
 
-    <fieldset>
-        <legend><?php echo __('Change Password'); ?></legend>
-        <?php
-        echo $this->Form->input('id');
-        if (!empty($password_change_code)) {
-            echo $this->Form->input('password_change_code', array ('type'  => 'text', 'label' => 'Password Change Code'));
-        }else{
-            echo $this->Form->input('cpassword', array ('type'  => 'password', 'label' => 'Current Password'));
-        }
-        echo $this->Form->input('password', array ('label' => 'New Password'));
-        echo $this->Form->input('rpassword', array ('type'  => 'password', 'label' => 'Re-type Password'));
-        ?>
-    </fieldset>
+
+    <h2><?php echo __('Change Password'); ?></h2>
+    <?php
+    echo $this->Form->input('id');
+    if (!empty($password_access_token)) {
+        echo $this->Form->input('password_access_token', array('type' => 'hidden', 'label' => 'Password Change Code'));
+    } else {
+        echo $this->Form->input('cpassword', array('type' => 'password', 'label' => array('text' => 'Current Password', 'class' => 'sr-only'), 'class' => 'form-control', 'placeholder' => "Current Password"));
+    }
+    echo $this->Form->input('password', array('type' => 'password', 'label' => array('text' => 'New Password', 'class' => 'sr-only'), 'class' => 'form-control', 'placeholder' => "New Password"));   
+    echo $this->Form->input('rpassword', array('type' => 'password', 'label' => array('text' => 'Re-type Password', 'class' => 'sr-only'), 'class' => 'form-control', 'placeholder' => "Re-type Password"));
+
+    ?>
+
     <div class="control-group">
         <div class="controls">
             <?php
-            echo $this->Form->button('Submit', array ('type'  => 'submit', 'class' => 'btn btn-success submit', 'div'   => false));
-            echo $this->Form->button('Reset', array ('type'  => 'reset', 'class' => 'btn btn-warning reset', 'div'   => false));
-            echo '<button class="btn btn-danger reset" type="reset" onclick="history.back();">Cancel</button>';
+            echo $this->Form->button('Submit', array('type' => 'submit', 'class' => 'btn btn-lg btn-success btn-block', 'div' => false));
             ?>
         </div>
     </div>

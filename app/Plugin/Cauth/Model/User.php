@@ -122,7 +122,7 @@ class User extends CauthAppModel {
         $id     = $this->data['User']['id'];
         $user   = $this->find('first', array ('conditions' => array ('User.' . $this->primaryKey => $id)));
         if (!empty($user)) {
-            if ($user['User']['password_change_code'] == $this->data['User']['password_change_code']) {
+            if ($user['User']['password_access_token'] == $this->data['User']['password_access_token']) {
                 $return = true;
             }
         }

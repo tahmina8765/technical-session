@@ -147,10 +147,10 @@ class UsersController extends CauthAppController
      * @param type $id
      * @throws NotFoundException
      */
-    public function changePassword($id = null, $password_change_code = null)
+    public function changePassword($id = null, $password_access_token = null)
     {
         $this->layout = 'login';
-
+        
         $this->User->validate['password'] = array(
             'notempty'           => array(
                 'rule' => array('notempty'),
@@ -192,7 +192,7 @@ class UsersController extends CauthAppController
                 $id = $this->Session->read('Auth.User.id');
             }
         } else {
-            $this->User->validate['password_change_code'] = array(
+            $this->User->validate['password_access_token'] = array(
                 'notempty'                => array(
                     'rule' => array('notempty'),
                 ),
@@ -212,7 +212,7 @@ class UsersController extends CauthAppController
             throw new NotFoundException(__('Invalid user'));
         }
         if ($this->request->is('post') || $this->request->is('put')) {
-            $tmp = $this->request->data['User']['password_change_code'];
+            $tmp = $this->request->data['User']['password_access_token'];
             if ($this->User->save($this->request->data)) {
                 $this->Session->setFlash(__('Password has changed successfully.'), 'success');
                 $this->redirect(array('action' => 'index'));
@@ -225,7 +225,7 @@ class UsersController extends CauthAppController
             $this->request->data['User']['password'] = '';
         }
 
-        $this->set(compact('password_change_code'));
+        $this->set(compact('password_access_token'));
     }
 
     /**
