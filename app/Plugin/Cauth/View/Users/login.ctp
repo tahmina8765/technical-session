@@ -20,7 +20,7 @@
     echo $this->Form->input('User.password', array('label' => array('text' => 'Password', 'class' => 'sr-only'), 'class' => 'form-control', 'placeholder' => "Password"));
     ?>
     <?php
-    echo $this->html->link('Forget Password? Click here', array('plugin' => 'cauth', 'controller' => 'users', 'action' => 'forgetPassword'));
+    echo $this->html->link('Forgot Password? Click here', array('plugin' => 'cauth', 'controller' => 'users', 'action' => 'forgetPassword'));
     ?>
 
     <div class="control-group">
