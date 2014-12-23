@@ -180,10 +180,10 @@ class TrainingsController extends TrainingManagerAppController
             if ($result && $training && $valid) {
                 $this->Besttopic->id = $result['Besttopic']['id'];
                 $result              = $this->Besttopic->save(array('user_id' => $userId, 'training_id' => $courseId));
-                $this->Session->setFlash(__('Think you for your valuable vote.'), 'success');
+                $this->Session->setFlash(__('Thank you for your valuable vote.'), 'success');
             } else if ($training && $valid) {
                 $result = $this->Besttopic->save(array('user_id' => $userId, 'training_id' => $courseId));
-                $this->Session->setFlash(__('Think you for your valuable vote.'), 'success');
+                $this->Session->setFlash(__('Thank you for your valuable vote.'), 'success');
             }
         }
         return $this->redirect('/');
