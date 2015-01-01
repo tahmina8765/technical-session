@@ -1,17 +1,16 @@
-
 <div class="text-center">
-    <h1>Vote for your favorite session! </h1>
+    <h1>Best Host </h1>
 </div>
 <br><br>
 <?php
-$result = $this->requestAction(
+$result    = $this->requestAction(
         'training_manager/Trainings/index/rank'
 );
 $trainings = $result['training'];
 $besttopic = (int) $result['besttopic'];
 if (!empty($trainings)) {
     ?>
-    <ul>
+    <div class="text-center">
         <?php
         foreach ($trainings as $training) {
             $names = array();
@@ -21,15 +20,16 @@ if (!empty($trainings)) {
             $name     = implode(', ', $names);
             ?>
             <?php $divclass = ((int) $training['Training']['id'] === $besttopic) ? 'success' : 'default'; ?>
-            <li class="topic ">
-                <?php
-                echo $this->Html->link('<div class="panel panel-' . $divclass . '"><div class="panel-heading">' . $training['Training']['title'] . '</div><div class="panel-footer">' . $name . '</div></div>', array('plugin' => 'training_manager', 'controller' => 'Trainings', 'action' => 'best_topic', $training['Training']['id']), array('escape' => false));
-                ?>
-            </li>
+            <!--<li class="topic ">-->
             <?php
+            echo $this->Html->link('<div class="panel panel-' . $divclass . '"><div class="panel-body">' . $training['Training']['title'] . '<br>' . $name . '</div></div>', array('plugin' => 'training_manager', 'controller' => 'Trainings', 'action' => 'best_topic', $training['Training']['id']), array('escape' => false));
+            ?>
+            <!--</li>-->
+            <?php
+            break;
         }
         ?>
-    </ul>
+    </div>
     <?php
 }
 ?>

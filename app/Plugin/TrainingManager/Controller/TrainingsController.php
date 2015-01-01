@@ -19,7 +19,7 @@ class TrainingsController extends TrainingManagerAppController
      */
     public $components = array('Paginator', 'Session');
     public $paginate   = array(
-        'limit' => 20,
+        'limit' => 10,
         'order' => array(
             'Training.name' => 'asc'
         )
@@ -98,14 +98,14 @@ class TrainingsController extends TrainingManagerAppController
             }
         }
 
-        $title                              = 'Session List';
-        $this->Paginator->settings['limit'] = 30;
+        $title                              = 'Session List';        
         $today                              = date('Y-m-d');
 
         // $trainings = $this->Paginator->paginate('Training');
 
         switch ($type) {
             case 'vote':
+                $this->Paginator->settings['limit'] = 100;
                 $this->Paginator->settings['order']['Training.schedule']           = 'asc';
                 $this->Paginator->settings['conditions'][]['Training.schedule <']  = $today;
                 $title                                                             = 'Session Archive List';
@@ -121,6 +121,7 @@ class TrainingsController extends TrainingManagerAppController
                 $title                                                             = 'Upcoming Sessions';
                 break;
             case 'rank':
+                $this->Paginator->settings['limit'] = 100;
                 $this->Training->virtualFields                                     = array(
                     'point' => 'training_rank (Training.id)',
                 );
@@ -143,7 +144,7 @@ class TrainingsController extends TrainingManagerAppController
             );
         }
 
-        $this->set(compact('trainings', 'title'));
+        $this->set(compact('trainings', 'title', 'type'));
     }
 
     public function best_topic($id)

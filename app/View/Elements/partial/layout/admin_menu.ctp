@@ -1,5 +1,5 @@
 <ul class="nav navbar-nav">
-    <li class="active"><a href="#">Home</a></li>
+    <li class="active"><?php echo $this->Html->link(__('Home'), '/');?></li>
     <li><?php echo $this->Html->link(__('Archive'), array('plugin' => 'training_manager', 'controller' => 'Trainings', 'action' => 'index', 'archive')); ?></li>
     <li><?php echo $this->Html->link(__('Upcoming sessions'), array('plugin' => 'training_manager', 'controller' => 'Trainings', 'action' => 'index', 'upcoming')); ?></li>
     <li><?php echo $this->Html->link(__('Result'), array('plugin' => 'training_manager', 'controller' => 'Trainings', 'action' => 'index', 'rank')); ?></li>
