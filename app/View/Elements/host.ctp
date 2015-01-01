@@ -1,6 +1,7 @@
 
 <div class="text-center">
-    <h1>Vote for your favorite session! </h1>
+    <h1>Thank you for your participation! </h1>
+    <p>Best host name will be published this evening :)</p>
 </div>
 <br><br>
 <?php
@@ -25,7 +26,8 @@ if (!empty($trainings)) {
             <?php $voteimg = ((int) $training['Training']['id'] === $besttopic) ? '<br>' .$this->Html->image('thumbs-up.png') : ''; ?>
             <li class="topic ">
                 <?php
-                echo $this->Html->link('<div class="panel panel-' . $divclass . '"><div class="panel-heading">' . $training['Training']['title'] . $voteimg .'</div><div class="panel-footer">' . $name . '</div></div>', array('plugin' => 'training_manager', 'controller' => 'Trainings', 'action' => 'best_topic', $training['Training']['id']), array('escape' => false));
+                // echo $this->Html->link('<div class="panel panel-' . $divclass . '"><div class="panel-heading">' . $training['Training']['title'] . $voteimg .'</div><div class="panel-footer">' . $name . '</div></div>', array('plugin' => 'training_manager', 'controller' => 'Trainings', 'action' => 'best_topic', $training['Training']['id']), array('escape' => false));
+                echo $this->Html->link('<div class="panel panel-' . $divclass . '"><div class="panel-heading">' . $training['Training']['title'] . $voteimg .'</div><div class="panel-footer">' . $name . '</div></div>', '/', array('escape' => false));
                 ?>
             </li>
             <?php
