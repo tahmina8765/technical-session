@@ -1,10 +1,11 @@
 
 <div class="text-center">
-    <h1>Thank you for your participation! </h1>
-    <p>Best host name will be published this evening :)</p>
+    <h1>Best Host for 2014: Newton Sarker </h1>
+    <p><?php echo $this->Html->img('speaker-of-the-year.jpg');?></p>
 </div>
 <br><br>
 <?php
+/*
 $result = $this->requestAction(
         'training_manager/Trainings/index/vote'
 );
@@ -36,4 +37,6 @@ if (!empty($trainings)) {
     </ul>
     <?php
 }
+ * 
+ */
 ?>
