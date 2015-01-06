@@ -1,6 +1,6 @@
 <div class="trainings index">
     <h2><?php echo __('Trainings'); ?></h2>
-    <table cellpadding="0" cellspacing="0">
+    <table class="table table-bordered">
         <thead>
             <tr>
                 <th><?php echo $this->Paginator->sort('id'); ?></th>
@@ -34,21 +34,18 @@
             'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
         ));
         ?>	</p>
-    <div class="paging">
-        <?php
-        echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
-        echo $this->Paginator->numbers(array('separator' => ''));
-        echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
-        ?>
-    </div>
+    <nav>
+        <ul class="pagination">
+            <?php
+            echo $this->Paginator->first('&lsaquo;', array('tag' => 'li', 'title' => __('First page'), 'escape' => false));
+            echo $this->Paginator->prev('&laquo;', array('tag' => 'li', 'title' => __('Previous page'), 'disabledTag' => 'span', 'escape' => false), null, array('tag' => 'li', 'disabledTag' => 'span', 'escape' => false, 'class' => 'disabled'));
+            echo $this->Paginator->numbers(array('separator' => false, 'tag' => 'li', 'currentTag' => 'span', 'currentClass' => 'active'));
+            echo $this->Paginator->next('&raquo;', array('tag' => 'li', 'disabledTag' => 'span', 'title' => __('Next page'), 'escape' => false), null, array('tag' => 'li', 'disabledTag' => 'span', 'escape' => false, 'class' => 'disabled'));
+            echo $this->Paginator->last('&rsaquo;', array('tag' => 'li', 'title' => __('First page'), 'escape' => false));
+            ?>
+
+        </ul>
+    </nav>
 </div>
-<div class="actions">
-    <h3><?php echo __('Actions'); ?></h3>
-    <ul>
-        <li><?php echo $this->Html->link(__('New Training'), array('action' => 'add')); ?></li>
-        <li><?php echo $this->Html->link(__('List Polls'), array('controller' => 'polls', 'action' => 'index')); ?> </li>
-        <li><?php echo $this->Html->link(__('New Poll'), array('controller' => 'polls', 'action' => 'add')); ?> </li>
-        <li><?php echo $this->Html->link(__('List Training Users'), array('controller' => 'training_users', 'action' => 'index')); ?> </li>
-        <li><?php echo $this->Html->link(__('New Training User'), array('controller' => 'training_users', 'action' => 'add')); ?> </li>
-    </ul>
-</div>
+
+

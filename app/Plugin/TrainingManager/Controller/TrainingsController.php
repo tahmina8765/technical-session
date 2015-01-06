@@ -59,28 +59,6 @@ class TrainingsController extends TrainingManagerAppController
      *
      * @return void
      */
-//    public function index()
-//    {
-//        $title                              = array();
-//        $this->Paginator->settings['limit'] = 30;
-//
-//        $trainings = $this->Paginator->paginate('Training');
-//        if (isset($this->passedArgs['Search.schedule'])) {
-//            $this->Paginator->settings['conditions'][]['Training.schedule'] = $this->passedArgs['Search.schedule'];
-//            $this->request->data['Search']['schedule']                      = $this->passedArgs['Search.schedule'];
-//            $title[]                                                        = __('Name', true) . ': ' . $this->passedArgs['Search.schedule'];
-//
-//            $trainings = $this->Paginator->paginate('Training');
-//        }
-//        $this->Training->recursive = 2;
-//        $this->set(compact('trainings'));
-//    }
-
-    /**
-     * archive method
-     *
-     * @return void
-     */
     public function index($type = null)
     {
         $userId   = 0;
@@ -98,14 +76,14 @@ class TrainingsController extends TrainingManagerAppController
             }
         }
 
-        $title                              = 'Session List';        
-        $today                              = date('Y-m-d');
+        $title = 'Session List';
+        $today = date('Y-m-d');
 
         // $trainings = $this->Paginator->paginate('Training');
 
         switch ($type) {
             case 'vote':
-                $this->Paginator->settings['limit'] = 100;
+                $this->Paginator->settings['limit']                                = 100;
                 $this->Paginator->settings['order']['Training.schedule']           = 'asc';
                 $this->Paginator->settings['conditions'][]['Training.schedule <']  = $today;
                 $title                                                             = 'Session Archive List';
@@ -121,7 +99,7 @@ class TrainingsController extends TrainingManagerAppController
                 $title                                                             = 'Upcoming Sessions';
                 break;
             case 'rank':
-                $this->Paginator->settings['limit'] = 100;
+                $this->Paginator->settings['limit']                                = 100;
                 $this->Training->virtualFields                                     = array(
                     'point' => 'training_rank (Training.id)',
                 );
@@ -361,15 +339,62 @@ class TrainingsController extends TrainingManagerAppController
      */
     public function admin_add()
     {
+        $this->loadModel('User');
+        $this->loadModel('TrainingUser');
+        
+        $users = $this->User->find('list', array(
+            'fields'     => array('User.id', 'User.name'),
+            'conditions' => array(
+                'User.group_id' => '2'
+            )
+        ));
+
         if ($this->request->is('post')) {
+            $postData = $this->request->data;
             $this->Training->create();
-            if ($this->Training->save($this->request->data)) {
+            
+            if(!empty($postData['TrainingUser']['user_id'])){
+                $user_ids = array();
+                foreach($postData['TrainingUser']['user_id'] as $key => $val){
+                    $user_ids[$key]['user_id'] = $val;
+                }    
+                unset($postData['TrainingUser']);
+                $postData['TrainingUser'] = $user_ids;
+            }
+        
+            $datasource = $this->Training->getDataSource();
+            try {
+                $datasource->begin();
+                if (!$this->Training->save($postData)) {
+                    throw new Exception();
+                }
+                
+                $training_id = $this->Training->getLastInsertId();
+                if(!empty($postData['TrainingUser'])){
+                    foreach($postData['TrainingUser'] as $key => $val){
+                        $postData['TrainingUser'][$key]['training_id'] = $training_id;
+                    }
+                }               
+
+                if (!$this->TrainingUser->saveAll($postData['TrainingUser'])) {
+                    throw new Exception();
+                }
+                $datasource->commit();
                 $this->Session->setFlash(__('The training has been saved.'));
                 return $this->redirect(array('action' => 'index'));
-            } else {
+            } catch (Exception $e) {
+                $datasource->rollback();
                 $this->Session->setFlash(__('The training could not be saved. Please, try again.'));
             }
+
+//            if ($this->Training->saveAll($this->request->data)) {
+//                $this->Session->setFlash(__('The training has been saved.'));
+//                return $this->redirect(array('action' => 'index'));
+//            } else {
+//                $this->Session->setFlash(__('The training could not be saved. Please, try again.'));
+//            }
         }
+        $this->set(compact('users'));
     }
 
     /**

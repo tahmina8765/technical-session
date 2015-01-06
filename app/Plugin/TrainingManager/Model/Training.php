@@ -44,8 +44,21 @@ class Training extends TrainingManagerAppModel
      * @var array
      */
     public $hasMany = array(
+        'Besttopic'    => array(
+            'className'    => 'Besttopic',
+            'foreignKey'   => 'training_id',
+            'dependent'    => false,
+            'conditions'   => '',
+            'fields'       => '',
+            'order'        => '',
+            'limit'        => '',
+            'offset'       => '',
+            'exclusive'    => '',
+            'finderQuery'  => '',
+            'counterQuery' => ''
+        ),
         'TrainingUser' => array(
-            'className'    => 'TrainingUser',
+            'className'    => 'TrainingManager.TrainingUser',
             'foreignKey'   => 'training_id',
             'dependent'    => false,
             'conditions'   => '',

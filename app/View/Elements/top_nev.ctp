@@ -23,6 +23,9 @@
                 case 2:
                     echo $this->element('partial/layout/user_menu');
                     break;
+                case 3:
+                    echo $this->element('partial/layout/management_menu');
+                    break;
                 default:
                     echo $this->element('partial/layout/guest_menu');
                     break;

@@ -1,12 +1,12 @@
 <?php
-App::uses('AppModel', 'Model');
+App::uses('TrainingManagerAppModel', 'TrainingManager.Model');
 /**
  * Besthost Model
  *
  * @property User $User
  * @property Host $Host
  */
-class Besthost extends AppModel {
+class Besthost extends TrainingManagerAppModel {
 
 /**
  * Use table

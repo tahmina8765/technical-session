@@ -53,7 +53,7 @@ class TrainingUsersController extends TrainingManagerAppController
      */
     public function add()
     {
-        if ($this->request->is('post')) {
+        if ($this->request->is('post')) {            
             $this->TrainingUser->create();
             if ($this->TrainingUser->save($this->request->data)) {
                 $this->Session->setFlash(__('The training user has been saved.'));

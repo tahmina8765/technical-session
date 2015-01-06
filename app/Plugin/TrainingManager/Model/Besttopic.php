@@ -1,12 +1,12 @@
 <?php
-App::uses('AppModel', 'Model');
+App::uses('TrainingManagerAppModel', 'TrainingManager.Model');
 /**
- * TrainingUser Model
+ * Besttopic Model
  *
  * @property User $User
  * @property Training $Training
  */
-class TrainingUser extends AppModel {
+class Besttopic extends TrainingManagerAppModel {
 
 /**
  * Validation rules

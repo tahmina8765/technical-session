@@ -1,12 +1,12 @@
 <?php
-App::uses('AppModel', 'Model');
+App::uses('TrainingManagerAppModel', 'TrainingManager.Model');
 /**
- * Besttopic Model
+ * TrainingUser Model
  *
  * @property User $User
  * @property Training $Training
  */
-class Besttopic extends AppModel {
+class TrainingUser extends TrainingManagerAppModel {
 
 /**
  * Validation rules
@@ -45,14 +45,14 @@ class Besttopic extends AppModel {
  */
 	public $belongsTo = array(
 		'User' => array(
-			'className' => 'User',
+			'className' => 'Cauth.User',
 			'foreignKey' => 'user_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
 		),
 		'Training' => array(
-			'className' => 'Training',
+			'className' => 'TrainingManager.Training',
 			'foreignKey' => 'training_id',
 			'conditions' => '',
 			'fields' => '',
