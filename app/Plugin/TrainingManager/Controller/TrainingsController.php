@@ -17,6 +17,7 @@ class TrainingsController extends TrainingManagerAppController
      *
      * @var array
      */
+    private $hostGroup = 2;
     public $components = array('Paginator', 'Session');
     public $paginate   = array(
         'limit' => 10,
@@ -341,40 +342,40 @@ class TrainingsController extends TrainingManagerAppController
     {
         $this->loadModel('User');
         $this->loadModel('TrainingUser');
-        
+
         $users = $this->User->find('list', array(
             'fields'     => array('User.id', 'User.name'),
             'conditions' => array(
-                'User.group_id' => '2'
+                'User.group_id' => $this->hostGroup
             )
         ));
 
         if ($this->request->is('post')) {
             $postData = $this->request->data;
             $this->Training->create();
-            
-            if(!empty($postData['TrainingUser']['user_id'])){
+
+            if (!empty($postData['TrainingUser']['user_id'])) {
                 $user_ids = array();
-                foreach($postData['TrainingUser']['user_id'] as $key => $val){
+                foreach ($postData['TrainingUser']['user_id'] as $key => $val) {
                     $user_ids[$key]['user_id'] = $val;
-                }    
+                }
                 unset($postData['TrainingUser']);
                 $postData['TrainingUser'] = $user_ids;
             }
-        
+
             $datasource = $this->Training->getDataSource();
             try {
                 $datasource->begin();
                 if (!$this->Training->save($postData)) {
                     throw new Exception();
                 }
-                
+
                 $training_id = $this->Training->getLastInsertId();
-                if(!empty($postData['TrainingUser'])){
-                    foreach($postData['TrainingUser'] as $key => $val){
+                if (!empty($postData['TrainingUser'])) {
+                    foreach ($postData['TrainingUser'] as $key => $val) {
                         $postData['TrainingUser'][$key]['training_id'] = $training_id;
                     }
-                }               
+                }
 
                 if (!$this->TrainingUser->saveAll($postData['TrainingUser'])) {
                     throw new Exception();
@@ -443,6 +444,8 @@ class TrainingsController extends TrainingManagerAppController
         }
         return $this->redirect(array('action' => 'index'));
     }
+
+    
 
 }
 
