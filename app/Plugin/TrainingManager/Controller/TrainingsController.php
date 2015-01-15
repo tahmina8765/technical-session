@@ -374,8 +374,8 @@ class TrainingsController extends TrainingManagerAppController
             )
         ));
 
+        if ($this->request->is('put')) {
 
-        if ($this->request->is('post')) {
             $postData = $this->request->data;
             $this->Training->create();
 
@@ -386,43 +386,71 @@ class TrainingsController extends TrainingManagerAppController
                 )
             ));
 
+            $submittedUsers         = $postData['TrainingUser']['user_id'];
+            $removeTrainingUsersKey = array();
+            $newUsers               = array();
 
 
             if (!empty($postData['TrainingUser']['user_id'])) {
                 $user_ids = array();
                 foreach ($postData['TrainingUser']['user_id'] as $key => $val) {
-
-                    $user_ids[$key]['user_id'] = $val;
+                    if (!in_array($val, $existingTrainingUsers)) {
+                        $user_ids[$key]['user_id'] = $val;
+                    }
+                    $newUsers[] = $val;
                 }
                 unset($postData['TrainingUser']);
                 $postData['TrainingUser'] = $user_ids;
             }
 
+            foreach ($existingTrainingUsers as $key => $val) {
+                if (!in_array($val, $newUsers)) {
+                    $removeTrainingUsersKey[] = $key;
+                }
+            }
 
-            die();
+            $removeTrainingUsersKey = array_reverse($removeTrainingUsersKey);
+
             $datasource = $this->Training->getDataSource();
             try {
                 $datasource->begin();
                 if (!$this->Training->save($postData)) {
                     throw new Exception();
                 }
+                $training_id = $id;
 
-
-                $training_id = $this->Training->getLastInsertId();
                 if (!empty($postData['TrainingUser'])) {
                     foreach ($postData['TrainingUser'] as $key => $val) {
+                        if (!empty($removeTrainingUsersKey)) {
+                            $postData['TrainingUser'][$key]['id'] = array_pop($removeTrainingUsersKey);
+                        }
                         $postData['TrainingUser'][$key]['training_id'] = $training_id;
                     }
                 }
 
-                if (!$this->TrainingUser->saveAll($postData['TrainingUser'])) {
-                    throw new Exception();
+                if (!empty($postData['TrainingUser'])) {
+                    if (!$this->TrainingUser->saveAll($postData['TrainingUser'])) {
+                        throw new Exception();
+                    }
                 }
                 $datasource->commit();
+
+                if (!empty($removeTrainingUsersKey)) {
+                    foreach ($removeTrainingUsersKey as $key) {
+                        $this->TrainingUser->id = $key;
+                        $this->TrainingUser->delete();
+                    }
+                }
+
                 $this->Session->setFlash(__('The training has been saved.'));
                 return $this->redirect(array('action' => 'index'));
             } catch (Exception $e) {
                 $datasource->rollback();
+                unset($this->request->data['TrainingUser']);
+                foreach ($submittedUsers as $key => $val) {
+                    $this->request->data['TrainingUser'][$key]['user_id']     = $val;
+                    $this->request->data['TrainingUser'][$key]['training_id'] = $id;
+                }
                 $this->Session->setFlash(__('The training could not be saved. Please, try again.'));
             }
         } else {
@@ -452,6 +480,68 @@ class TrainingsController extends TrainingManagerAppController
             $this->Session->setFlash(__('The training could not be deleted. Please, try again.'));
         }
         return $this->redirect(array('action' => 'index'));
+    }
+
+    public function admin_score($trainingId = null)
+    {
+        $this->loadModel('Score');
+        $this->loadModel('User');
+
+        // Validate training id
+        if (!$this->Training->exists($trainingId)) {
+            throw new NotFoundException(__('Invalid training'));
+        }
+
+        if ($this->request->is('post')) {
+            $this->Score->create();
+
+            $options = array('conditions' => array(
+                    'Score.user_id'     => $this->request->data['Score']['user_id'],
+                    'Score.training_id' => $trainingId,
+            ));
+            $score   = $this->Score->find('first', $options);
+
+            if (!empty($score)) {
+                $this->request->data['Score']['id'] = $score['Score']['id'];
+            }
+
+            $this->request->data['Score']['training_id'] = $trainingId;
+
+            if ($this->Score->save($this->request->data)) {
+                $this->Session->setFlash(__('The score has been saved.'));
+                return $this->redirect(array('action' => 'index'));
+            } else {
+                $this->Session->setFlash(__('The score could not be saved. Please, try again.'));
+            }
+        }
+        $options = array('conditions' => array(
+                'Training.id' => $trainingId,
+        ));
+
+        $trainings = $this->Training->find('first', $options);
+
+        $ScoreUsers = $this->Score->find('list', array(
+            'fields'     => 'Score.user_id',
+            'conditions' => array(
+                'Score.training_id' => $trainingId,
+            )
+        ));
+        $exist      = array();
+        foreach ($ScoreUsers as $val) {
+            $exist[] = $val;
+        }
+        $users = $this->User->find('list', array(
+            'conditions' => array(
+                'NOT' => array(
+                    'User.id' => $exist
+                ),
+                'AND' => array(
+                    'User.group_id' => $this->hostGroup,
+                    'User.is_disabled IS NULL'
+                )
+            )
+        ));
+        $this->set(compact('trainings', 'users'));
     }
 
     public function best_topic($id)
