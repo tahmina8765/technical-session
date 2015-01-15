@@ -126,54 +126,6 @@ class TrainingsController extends TrainingManagerAppController
         $this->set(compact('trainings', 'title', 'type'));
     }
 
-    public function best_topic($id)
-    {
-
-        if (!$this->Training->exists($id)) {
-            throw new NotFoundException(__('Invalid training'));
-        }
-        $userId   = 0;
-        $courseId = $id;
-        $UserAuth = $this->Session->read('Auth');
-        if (!empty($UserAuth)) {
-            $userId = $this->Session->read('Auth.User.id');
-        }
-
-        $this->loadModel('Besttopic');
-
-        if (!empty($courseId) && !empty($userId)) {
-            $result   = $this->Besttopic->find('first', array('conditions' => array('AND' => array('Besttopic.user_id' => $userId))));
-            $options  = array('conditions' => array('Training.' . $this->Training->primaryKey => $courseId));
-            $training = $this->Training->find('first', $options);
-            // Check Validation
-            $valid    = true;
-            if (!empty($training['TrainingUser'])) {
-                $trainers = array();
-                foreach ($training['TrainingUser'] as $trainer) {
-                    $trainers[] = $trainer['user_id'];
-                }
-                if (in_array($userId, $trainers)) {
-                    $valid = false;
-                    $this->Session->setFlash(__('Opps! you can not vote for your own session.'), 'error');
-                }
-            }
-            if ($result && $training && $valid) {
-                $this->Besttopic->id = $result['Besttopic']['id'];
-                $result              = $this->Besttopic->save(array('user_id' => $userId, 'training_id' => $courseId));
-                $this->Session->setFlash(__('Thank you for your valuable vote.'), 'success');
-            } else if ($training && $valid) {
-                $result = $this->Besttopic->save(array('user_id' => $userId, 'training_id' => $courseId));
-                $this->Session->setFlash(__('Thank you for your valuable vote.'), 'success');
-            }
-        }
-        return $this->redirect('/');
-    }
-
-    public function best_host($id)
-    {
-        
-    }
-
     /**
      * view method
      *
@@ -313,7 +265,8 @@ class TrainingsController extends TrainingManagerAppController
      */
     public function admin_index()
     {
-        $this->Training->recursive = 0;
+        $this->Training->recursive                               = 0;
+        $this->Paginator->settings['order']['Training.schedule'] = 'desc';
         $this->set('trainings', $this->Paginator->paginate());
     }
 
@@ -407,20 +360,76 @@ class TrainingsController extends TrainingManagerAppController
      */
     public function admin_edit($id = null)
     {
+        $this->loadModel('User');
+        $this->loadModel('TrainingUser');
+
         if (!$this->Training->exists($id)) {
             throw new NotFoundException(__('Invalid training'));
         }
-        if ($this->request->is(array('post', 'put'))) {
-            if ($this->Training->save($this->request->data)) {
+
+        $users = $this->User->find('list', array(
+            'fields'     => array('User.id', 'User.name'),
+            'conditions' => array(
+                'User.group_id' => $this->hostGroup
+            )
+        ));
+
+
+        if ($this->request->is('post')) {
+            $postData = $this->request->data;
+            $this->Training->create();
+
+            $existingTrainingUsers = $this->TrainingUser->find('list', array(
+                'fields'     => array('TrainingUser.id', 'TrainingUser.user_id'),
+                'conditions' => array(
+                    'TrainingUser.training_id' => $id
+                )
+            ));
+
+
+
+            if (!empty($postData['TrainingUser']['user_id'])) {
+                $user_ids = array();
+                foreach ($postData['TrainingUser']['user_id'] as $key => $val) {
+
+                    $user_ids[$key]['user_id'] = $val;
+                }
+                unset($postData['TrainingUser']);
+                $postData['TrainingUser'] = $user_ids;
+            }
+
+
+            die();
+            $datasource = $this->Training->getDataSource();
+            try {
+                $datasource->begin();
+                if (!$this->Training->save($postData)) {
+                    throw new Exception();
+                }
+
+
+                $training_id = $this->Training->getLastInsertId();
+                if (!empty($postData['TrainingUser'])) {
+                    foreach ($postData['TrainingUser'] as $key => $val) {
+                        $postData['TrainingUser'][$key]['training_id'] = $training_id;
+                    }
+                }
+
+                if (!$this->TrainingUser->saveAll($postData['TrainingUser'])) {
+                    throw new Exception();
+                }
+                $datasource->commit();
                 $this->Session->setFlash(__('The training has been saved.'));
                 return $this->redirect(array('action' => 'index'));
-            } else {
+            } catch (Exception $e) {
+                $datasource->rollback();
                 $this->Session->setFlash(__('The training could not be saved. Please, try again.'));
             }
         } else {
             $options             = array('conditions' => array('Training.' . $this->Training->primaryKey => $id));
             $this->request->data = $this->Training->find('first', $options);
         }
+        $this->set(compact('users'));
     }
 
     /**
@@ -445,7 +454,87 @@ class TrainingsController extends TrainingManagerAppController
         return $this->redirect(array('action' => 'index'));
     }
 
-    
+    public function best_topic($id)
+    {
+
+        if (!$this->Training->exists($id)) {
+            throw new NotFoundException(__('Invalid training'));
+        }
+        $userId   = 0;
+        $courseId = $id;
+        $UserAuth = $this->Session->read('Auth');
+        if (!empty($UserAuth)) {
+            $userId = $this->Session->read('Auth.User.id');
+        }
+
+        $this->loadModel('Besttopic');
+
+        if (!empty($courseId) && !empty($userId)) {
+            $result   = $this->Besttopic->find('first', array('conditions' => array('AND' => array('Besttopic.user_id' => $userId))));
+            $options  = array('conditions' => array('Training.' . $this->Training->primaryKey => $courseId));
+            $training = $this->Training->find('first', $options);
+            // Check Validation
+            $valid    = true;
+            if (!empty($training['TrainingUser'])) {
+                $trainers = array();
+                foreach ($training['TrainingUser'] as $trainer) {
+                    $trainers[] = $trainer['user_id'];
+                }
+                if (in_array($userId, $trainers)) {
+                    $valid = false;
+                    $this->Session->setFlash(__('Opps! you can not vote for your own session.'), 'error');
+                }
+            }
+            if ($result && $training && $valid) {
+                $this->Besttopic->id = $result['Besttopic']['id'];
+                $result              = $this->Besttopic->save(array('user_id' => $userId, 'training_id' => $courseId));
+                $this->Session->setFlash(__('Thank you for your valuable vote.'), 'success');
+            } else if ($training && $valid) {
+                $result = $this->Besttopic->save(array('user_id' => $userId, 'training_id' => $courseId));
+                $this->Session->setFlash(__('Thank you for your valuable vote.'), 'success');
+            }
+        }
+        return $this->redirect('/');
+    }
+
+    public function score($trainingId = null)
+    {
+        $this->loadModel('Score');
+
+        // Validate training id
+        if (!$this->Training->exists($trainingId)) {
+            throw new NotFoundException(__('Invalid training'));
+        }
+        // Validate user id
+        $userId   = 0;
+        $UserAuth = $this->Session->read('Auth');
+        if (!empty($UserAuth)) {
+            $userId = $this->Session->read('Auth.User.id');
+        } else {
+            throw new NotFoundException(__('Invalid user'));
+        }
+
+        $options = array('conditions' => array(
+                'Score.user_id'     => $userId,
+                'Score.training_id' => $trainingId,
+        ));
+        $score   = $this->Score->find('first', $options);
+
+        if ($this->request->is('post') && empty($score)) {
+            $this->Score->create();
+            $this->request->data['Score']['user_id']     = $userId;
+            $this->request->data['Score']['training_id'] = $trainingId;
+
+            if ($this->Score->save($this->request->data)) {
+                $this->Session->setFlash(__('The score has been saved.'));
+                return $this->redirect(array('action' => 'index'));
+            } else {
+                $this->Session->setFlash(__('The score could not be saved. Please, try again.'));
+            }
+        }
+        $trainings = $this->Training->find('list');
+        $this->set(compact('trainings', 'score'));
+    }
 
 }
 
