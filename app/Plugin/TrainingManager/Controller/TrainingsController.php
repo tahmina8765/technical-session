@@ -626,8 +626,8 @@ class TrainingsController extends TrainingManagerAppController
             $this->request->data['Score']['training_id'] = $trainingId;
 
             if ($this->Score->save($this->request->data)) {
-                $this->Session->setFlash(__('The score has been saved.'));
-                return $this->redirect(array('action' => 'index'));
+                $this->Session->setFlash(__('Thank you for rating this session.'));
+                return $this->redirect(array('plugin' => '', 'controller' => 'pages', 'action' => 'display', 'home'));
             } else {
                 $this->Session->setFlash(__('The score could not be saved. Please, try again.'));
             }

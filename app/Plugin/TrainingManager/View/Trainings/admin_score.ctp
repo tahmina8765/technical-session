@@ -46,29 +46,28 @@
         echo $this->Form->input('suggetions', array('label' => array('class' => 'col-lg-2 control-label', 'text' => 'Suggestions to improve')));
         ?>
     </fieldset>
-    <?php echo $this->Form->end(__('Submit')); ?>
+    <?php echo $this->Form->button('submit', array('type' => 'submit', 'class' => 'btn btn-primary pull-right')); ?>
+    <?php echo $this->Form->end(); ?>
 </div>
 
 <div class="scores index">
     <h2><?php echo __('Scores'); ?></h2>
     <table class="table table-bordered">
-<!--        <thead>
+        <thead>
             <tr>
-                <th><?php // echo $this->Paginator->sort('id'); ?></th>
-                <th><?php // echo $this->Paginator->sort('training_id'); ?></th>
-                <th><?php // echo $this->Paginator->sort('user_id'); ?></th>
-                <th><?php // echo $this->Paginator->sort('content_point'); ?></th>
-                <th><?php // echo $this->Paginator->sort('presentation_point'); ?></th>
-                <th><?php // echo $this->Paginator->sort('discussion_point'); ?></th>
-                <th><?php // echo $this->Paginator->sort('suggetions'); ?></th>
+                <th>User</th>
+                <th>Content point</th>
+                <th>Presentation point</th>
+                <th>Discussion point</th>
+                <th>Suggestions</th>
             </tr>
-        </thead>-->
+        </thead>
         <tbody>
             <?php foreach ($scores as $score): ?>
                 <tr>
-<!--                    <td><?php // echo h($score['Score']['id']); ?>&nbsp;</td>
+    <!--                    <td><?php // echo h($score['Score']['id']);  ?>&nbsp;</td>
                     <td>
-                        <?php // echo $this->Html->link($score['Training']['title'], array('controller' => 'trainings', 'action' => 'view', $score['Training']['id'])); ?>
+                    <?php // echo $this->Html->link($score['Training']['title'], array('controller' => 'trainings', 'action' => 'view', $score['Training']['id'])); ?>
                     </td>-->
                     <td>
                         <?php echo $this->Html->link($score['User']['name'], array('controller' => 'users', 'action' => 'view', $score['User']['id'])); ?>

@@ -30,7 +30,8 @@
 //        echo $this->Form->input('users');
         ?>
     </fieldset>
-    <?php echo $this->Form->end(__('Submit')); ?>
+    <?php echo $this->Form->button('submit', array('type' => 'submit', 'class' => 'btn btn-primary pull-right')); ?>
+        <?php echo $this->Form->end(); ?>
 </div>
 
 <style type="text/css">

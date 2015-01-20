@@ -18,7 +18,7 @@
         <legend><?php echo __('Admin:: Edit Training'); ?></legend>
         <?php
         $selectedWarnings = array();
-        foreach($this->data['TrainingUser'] as $tuser){
+        foreach ($this->data['TrainingUser'] as $tuser) {
             $selectedWarnings[] = $tuser['user_id'];
         }
         echo $this->Form->input('id');
@@ -35,7 +35,8 @@
 //        echo $this->Form->input('users');
         ?>
     </fieldset>
-    <?php echo $this->Form->end(__('Submit')); ?>
+    <?php echo $this->Form->button('submit', array('type' => 'submit', 'class' => 'btn btn-primary pull-right')); ?>
+    <?php echo $this->Form->end(); ?>
 </div>
 
 <style type="text/css">

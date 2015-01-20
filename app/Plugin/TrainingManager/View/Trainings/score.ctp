@@ -29,7 +29,7 @@ if (empty($score)) {
         );
         ?>
         <fieldset>
-            <legend><?php echo __('Add Score'); ?></legend>
+            <legend><?php echo __('Rate this session'); ?></legend>
             <?php
             echo $this->Form->input('id');
             echo $this->Form->input('training_id', array('type' => 'hidden'));
@@ -45,12 +45,18 @@ if (empty($score)) {
             echo $this->Form->input('suggetions', array('label' => array('class' => 'col-lg-2 control-label', 'text' => 'Suggestions to improve')));
             ?>
         </fieldset>
-        <?php echo $this->Form->end(__('Submit')); ?>
+        
+        <?php echo $this->Form->button('submit', array('type' => 'submit', 'class' => 'btn btn-primary pull-right')); ?>
+        <?php echo $this->Form->end(); ?>
     </div>
     <?php
 } else {
     ?>
-    Dear you have already provided a score for this  training
+<div class="text-center">
+    <img src="http://skypolatory.cyberplant.net/icon/animated/emoticon-0110-tongueout.gif" width="30">
+    <p>Dear, you have already rated this session.</p>
+</div>
+    
     <?php
 }
 ?>
