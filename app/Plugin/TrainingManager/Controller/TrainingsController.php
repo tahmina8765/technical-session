@@ -613,14 +613,31 @@ class TrainingsController extends TrainingManagerAppController
         } else {
             throw new NotFoundException(__('Invalid user'));
         }
+        
+        // Validate Date
+        $datefail = false;
+        $training = $this->Training->find('first', array('conditions' => array('Training.' . $this->Training->primaryKey => $trainingId)));
+//        echo strtotime($training['Training']['schedule']);
+//        echo "<br>";
+//        echo strtotime(date('Y-m-d'));
+        if(strtotime($training['Training']['schedule']) != strtotime(date('Y-m-d'))){
+            $datefail = true;
+            $this->Session->setFlash(__('Date Expired.'), 'error');
+        }
+        
+        
+        
 
         $options = array('conditions' => array(
                 'Score.user_id'     => $userId,
                 'Score.training_id' => $trainingId,
         ));
         $score   = $this->Score->find('first', $options);
+        if(!empty($score)){
+            $this->Session->setFlash(__('You have already rated this session.'), 'error');
+        }
 
-        if ($this->request->is('post') && empty($score)) {
+        if ($this->request->is('post') && empty($score) && !$datefail) {
             $this->Score->create();
             $this->request->data['Score']['user_id']     = $userId;
             $this->request->data['Score']['training_id'] = $trainingId;
@@ -633,7 +650,7 @@ class TrainingsController extends TrainingManagerAppController
             }
         }
         $trainings = $this->Training->find('list');
-        $this->set(compact('trainings', 'score'));
+        $this->set(compact('trainings', 'score', 'datefail'));
     }
 
 }

@@ -1,5 +1,5 @@
 <?php
-if (empty($score)) {
+if (empty($score) && !$datefail) {
     ?>
     <div class="scores form">
         <?php
@@ -54,7 +54,6 @@ if (empty($score)) {
     ?>
 <div class="text-center">
     <img src="http://skypolatory.cyberplant.net/icon/animated/emoticon-0110-tongueout.gif" width="30">
-    <p>Dear, you have already rated this session.</p>
 </div>
     
     <?php
