@@ -21,7 +21,7 @@
                     <td><?php echo h($training['Training']['modified']); ?>&nbsp;</td>
                     <td class="actions">
                         <?php // echo $this->Html->link(__('View'), array('action' => 'view', $training['Training']['id'])); ?>
-                        <?php echo $this->Html->link(__('Add Score'), array('admin' => true, 'plugin' => 'training_manager', 'controller' => 'Trainings', 'action' => 'score', $training['Training']['id'])); ?> | 
+                        <?php echo $this->Html->link(__('Score'), array('admin' => true, 'plugin' => 'training_manager', 'controller' => 'Trainings', 'action' => 'score', $training['Training']['id'])); ?> | 
                         <?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $training['Training']['id'])); ?>
                         <?php // echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $training['Training']['id']), array(), __('Are you sure you want to delete # %s?', $training['Training']['id'])); ?>
                     </td>
