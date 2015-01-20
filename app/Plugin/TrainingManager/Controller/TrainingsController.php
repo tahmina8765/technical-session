@@ -599,7 +599,7 @@ class TrainingsController extends TrainingManagerAppController
 
     public function score($trainingId = null)
     {
-        $this->loadModel('Score');
+        $this->loadModel('TrainingManager.Score');
 
         // Validate training id
         if (!$this->Training->exists($trainingId)) {
@@ -626,10 +626,10 @@ class TrainingsController extends TrainingManagerAppController
             $this->request->data['Score']['training_id'] = $trainingId;
 
             if ($this->Score->save($this->request->data)) {
-                $this->Session->setFlash(__('Thank you for rating this session.'));
+                $this->Session->setFlash(__('Thank you for rating this session.'), 'success');
                 return $this->redirect(array('plugin' => '', 'controller' => 'pages', 'action' => 'display', 'home'));
             } else {
-                $this->Session->setFlash(__('The score could not be saved. Please, try again.'));
+                $this->Session->setFlash(__('The score could not be saved. Please, try again.'), 'error');
             }
         }
         $trainings = $this->Training->find('list');

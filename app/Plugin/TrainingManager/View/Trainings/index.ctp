@@ -60,6 +60,7 @@
                         <th><?php echo $this->Paginator->sort('schedule'); ?></th>
                         <th><?php echo $this->Paginator->sort('title'); ?></th>
                         <th>Host</th>                        
+                        <th>Score</th>                        
                         <th>Download</th>
                     </tr>
                 </thead>
@@ -88,6 +89,7 @@
                                 }
                                 ?></td>
 
+                            <td><?php echo h($training['Training']['score']); ?></td>
                             <td></td>
                         </tr>
                     <?php endforeach; ?>
