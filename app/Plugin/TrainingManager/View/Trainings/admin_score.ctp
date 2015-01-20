@@ -13,7 +13,7 @@
             'error'   => array('attributes' => array('wrap' => 'span', 'class' => 'help-inline')),
     )));
     $options = array(
-        ''  => '--Select--',
+        ''   => '--Select--',
         '1'  => 'Less than Unsatisfied',
         '2'  => 'Unsatisfied',
         '3'  => 'More than Unsatisfied',
@@ -47,4 +47,38 @@
         ?>
     </fieldset>
     <?php echo $this->Form->end(__('Submit')); ?>
+</div>
+
+<div class="scores index">
+    <h2><?php echo __('Scores'); ?></h2>
+    <table class="table table-bordered">
+<!--        <thead>
+            <tr>
+                <th><?php // echo $this->Paginator->sort('id'); ?></th>
+                <th><?php // echo $this->Paginator->sort('training_id'); ?></th>
+                <th><?php // echo $this->Paginator->sort('user_id'); ?></th>
+                <th><?php // echo $this->Paginator->sort('content_point'); ?></th>
+                <th><?php // echo $this->Paginator->sort('presentation_point'); ?></th>
+                <th><?php // echo $this->Paginator->sort('discussion_point'); ?></th>
+                <th><?php // echo $this->Paginator->sort('suggetions'); ?></th>
+            </tr>
+        </thead>-->
+        <tbody>
+            <?php foreach ($scores as $score): ?>
+                <tr>
+<!--                    <td><?php // echo h($score['Score']['id']); ?>&nbsp;</td>
+                    <td>
+                        <?php // echo $this->Html->link($score['Training']['title'], array('controller' => 'trainings', 'action' => 'view', $score['Training']['id'])); ?>
+                    </td>-->
+                    <td>
+                        <?php echo $this->Html->link($score['User']['name'], array('controller' => 'users', 'action' => 'view', $score['User']['id'])); ?>
+                    </td>
+                    <td><?php echo h($score['Score']['content_point']); ?>&nbsp;</td>
+                    <td><?php echo h($score['Score']['presentation_point']); ?>&nbsp;</td>
+                    <td><?php echo h($score['Score']['discussion_point']); ?>&nbsp;</td>
+                    <td><?php echo h($score['Score']['suggetions']); ?>&nbsp;</td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
 </div>

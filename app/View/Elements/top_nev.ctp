@@ -23,7 +23,7 @@
                 case 2:
                     echo $this->element('partial/layout/user_menu');
                     break;
-                case 3:
+                case 4:
                     echo $this->element('partial/layout/management_menu');
                     break;
                 default:

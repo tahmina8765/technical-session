@@ -484,8 +484,18 @@ class TrainingsController extends TrainingManagerAppController
 
     public function admin_score($trainingId = null)
     {
-        $this->loadModel('Score');
+        $this->loadModel('TrainingManager.Score');
         $this->loadModel('User');
+
+        $this->Score->recursive = 0;
+        $scores = $this->Score->find('all', array(
+            'conditions' => array(
+                'Score.training_id' => $trainingId,
+            ),
+            'order' => array(
+                'User.name' => 'asc'
+            )
+        ));
 
         // Validate training id
         if (!$this->Training->exists($trainingId)) {
@@ -508,10 +518,10 @@ class TrainingsController extends TrainingManagerAppController
             $this->request->data['Score']['training_id'] = $trainingId;
 
             if ($this->Score->save($this->request->data)) {
-                $this->Session->setFlash(__('The score has been saved.'));
-                return $this->redirect(array('action' => 'index'));
+                $this->Session->setFlash(__('The score has been saved.'), 'success');
+                return $this->redirect(array('action' => 'admin_score', $trainingId));
             } else {
-                $this->Session->setFlash(__('The score could not be saved. Please, try again.'));
+                $this->Session->setFlash(__('The score could not be saved. Please, try again.'), 'error');
             }
         }
         $options = array('conditions' => array(
@@ -541,7 +551,7 @@ class TrainingsController extends TrainingManagerAppController
                 )
             )
         ));
-        $this->set(compact('trainings', 'users'));
+        $this->set(compact('trainings', 'users', 'scores'));
     }
 
     public function best_topic($id)
