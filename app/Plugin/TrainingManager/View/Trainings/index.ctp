@@ -5,7 +5,7 @@
     switch ($type) {
         case 'rank':
             $display_rank = true;
-        case 'vote':        
+        case 'vote':
         case 'upcoming':
             foreach ($trainings as $training) {
                 ?>
@@ -25,12 +25,12 @@
                                         $user = implode(',', $users);
                                         echo 'Host - ' . $user;
                                     }
-                                    
-                                    if($display_rank){
-                                    ?>
-                                    <span class="badge"><?php echo h($training['Training']['point']);       ?></span>
-                                    <br>
-                                    <?php
+
+                                    if ($display_rank) {
+                                        ?>
+                                        <span class="badge"><?php echo h($training['Training']['point']); ?></span>
+                                        <br>
+                                        <?php
                                     }
                                     ?>
                                     <i>
@@ -58,9 +58,8 @@
                 <thead>
                     <tr>
                         <th><?php echo $this->Paginator->sort('schedule'); ?></th>
-                        <th><?php echo $this->Paginator->sort('title'); ?></th>
-                        <th>Host</th>                        
-                        <th>Score</th>                        
+                        <th><?php echo $this->Paginator->sort('title'); ?></th>                   
+                        <th><?php echo $this->Paginator->sort('score'); ?></th>                        
                         <th>Download</th>
                     </tr>
                 </thead>
@@ -77,19 +76,40 @@
                                 //          echo h($training['Training']['schedule']); 
                                 ?>
                             </td>
-                            <td><?php echo h($training['Training']['title']); ?></td>
-                            <td><?php
+                            <td><?php echo h($training['Training']['title']); ?><br><em style="font-size: 12px; color: #777;">
+                            <?php
                                 if (!empty($training['TrainingUser'])) {
                                     $users = array();
                                     foreach ($training['TrainingUser'] as $user) {
                                         $users[] = $user['User']['name'];
                                     }
-                                    $user = implode(',', $users);
+                                    $user = implode(', ', $users);
                                     echo $user;
                                 }
-                                ?></td>
+                                ?></em></td>
 
-                            <td><?php echo h($training['Training']['score']); ?></td>
+                            <td class="text-center"><?php
+                                $score  = $training['Training']['score'];
+                                $imgsrc = '';
+                                if (!empty($score)) {
+                                    if ($score < 40) {
+                                        $imgsrc = 'http://skypesmileyscodes.com/wp-content/uploads/2015/01/sadsmile.png';
+                                    } else if ($score < 60) {
+                                        $imgsrc = 'http://skypesmileyscodes.com/wp-content/uploads/2015/01/smile.png';
+                                    } else if ($score < 80) {
+                                        $imgsrc = 'http://skypesmileyscodes.com/wp-content/uploads/2015/01/bigsmile.png';
+                                    } else {
+                                        $imgsrc = 'http://skypesmileyscodes.com/wp-content/uploads/2015/01/heart.png';
+                                    }
+                                }
+                                if (!empty($imgsrc)) {
+                                    ?>
+                                    <img src="<?php echo $imgsrc; ?>"><br>
+                                    <?php
+                                }
+                                ?>
+
+                                <?php echo h($training['Training']['score']); ?></td>
                             <td></td>
                         </tr>
                     <?php endforeach; ?>
