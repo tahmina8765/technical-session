@@ -52,7 +52,7 @@
 </div>
 
 <div class="scores index">
-    <h2><?php echo __('Scores'); ?></h2>
+    <h2><?php echo __('Scores'); ?>: <?php echo count($scores);?></h2>
     <table class="table table-bordered">
         <thead>
             <tr>
