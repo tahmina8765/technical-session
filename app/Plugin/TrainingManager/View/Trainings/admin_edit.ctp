@@ -24,6 +24,8 @@
         echo $this->Form->input('id');
         echo $this->Form->input('title', array('type' => 'text'));
         echo $this->Form->input('schedule');
+        echo $this->Form->input('image');        
+        echo $this->Form->input('content');
         echo $this->Form->input('TrainingUser.user_id', array(
             'class'    => array('checkbox'),
             'label'    => array('text' => 'Host', 'class' => 'col-lg-2 control-label'),
@@ -50,3 +52,4 @@
         margin-left: 0;
     }
 </style>
+

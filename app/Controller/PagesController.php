@@ -53,8 +53,8 @@ class PagesController extends AppController
      */
     public function display()
     {
+        $this->layout = 'static';
         $path = func_get_args();
-
         $count = count($path);
         if (!$count) {
             return $this->redirect('/');
