@@ -50,7 +50,7 @@
                     <?php
                 } else {
                     ?>
-                    <li><?php echo $this->Html->link('Login', array('plugin' => 'cauth', 'controller' => 'users', 'action' => 'login')); ?></li>
+                    <li><?php echo $this->Html->link('Login', array('admin' => false, 'plugin' => 'cauth', 'controller' => 'users', 'action' => 'login')); ?></li>
                     <?php
                 }
                 ?>

@@ -17,16 +17,16 @@ if (empty($score) && !$datefail) {
         )));
         $options = array(
             '0'  => 'N/A',
-            '1'  => 'Less than Unsatisfied',
+            '1'  => 'Very Unsatisfied',
             '2'  => 'Unsatisfied',
-            '3'  => 'More than Unsatisfied',
+            '3'  => 'Nearly Acceptable',
             '4'  => 'Acceptable',
             '5'  => 'More than Acceptable',
             '6'  => 'Good',
             '7'  => 'Very Good',
             '8'  => 'Nearly Excellent',
             '9'  => 'Excellent',
-            '10' => 'Above Excellent',
+            '10' => 'Awesome',
         );
         ?>
         <fieldset>
