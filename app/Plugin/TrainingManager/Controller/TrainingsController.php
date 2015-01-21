@@ -334,11 +334,11 @@ class TrainingsController extends TrainingManagerAppController
                     throw new Exception();
                 }
                 $datasource->commit();
-                $this->Session->setFlash(__('The training has been saved.'));
+                $this->Session->setFlash(__('The training has been saved.'), 'success');
                 return $this->redirect(array('action' => 'index'));
             } catch (Exception $e) {
                 $datasource->rollback();
-                $this->Session->setFlash(__('The training could not be saved. Please, try again.'));
+                $this->Session->setFlash(__('The training could not be saved. Please, try again.'), 'error');
             }
 
 //            if ($this->Training->saveAll($this->request->data)) {
@@ -442,7 +442,7 @@ class TrainingsController extends TrainingManagerAppController
                     }
                 }
 
-                $this->Session->setFlash(__('The training has been saved.'));
+                $this->Session->setFlash(__('The training has been saved.'), 'success');
                 return $this->redirect(array('action' => 'index'));
             } catch (Exception $e) {
                 $datasource->rollback();
@@ -451,7 +451,7 @@ class TrainingsController extends TrainingManagerAppController
                     $this->request->data['TrainingUser'][$key]['user_id']     = $val;
                     $this->request->data['TrainingUser'][$key]['training_id'] = $id;
                 }
-                $this->Session->setFlash(__('The training could not be saved. Please, try again.'));
+                $this->Session->setFlash(__('The training could not be saved. Please, try again.'), 'error');
             }
         } else {
             $options             = array('conditions' => array('Training.' . $this->Training->primaryKey => $id));
@@ -534,6 +534,9 @@ class TrainingsController extends TrainingManagerAppController
             'fields'     => 'Score.user_id',
             'conditions' => array(
                 'Score.training_id' => $trainingId,
+            ),
+            'order' => array(
+                'User.name' => 'asc'
             )
         ));
         $exist      = array();
