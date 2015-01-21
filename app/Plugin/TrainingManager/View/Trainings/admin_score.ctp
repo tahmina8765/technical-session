@@ -14,6 +14,7 @@
     )));
     $options = array(
         ''   => '--Select--',
+        '0'  => 'N/A',
         '1'  => 'Less than Unsatisfied',
         '2'  => 'Unsatisfied',
         '3'  => 'More than Unsatisfied',

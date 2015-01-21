@@ -16,6 +16,7 @@ if (empty($score) && !$datefail) {
                 'error'   => array('attributes' => array('wrap' => 'span', 'class' => 'help-inline')),
         )));
         $options = array(
+            '0'  => 'N/A',
             '1'  => 'Less than Unsatisfied',
             '2'  => 'Unsatisfied',
             '3'  => 'More than Unsatisfied',
@@ -45,17 +46,17 @@ if (empty($score) && !$datefail) {
             echo $this->Form->input('suggetions', array('label' => array('class' => 'col-lg-2 control-label', 'text' => 'Suggestions to improve')));
             ?>
         </fieldset>
-        
+
         <?php echo $this->Form->button('submit', array('type' => 'submit', 'class' => 'btn btn-primary pull-right')); ?>
         <?php echo $this->Form->end(); ?>
     </div>
     <?php
 } else {
     ?>
-<div class="text-center">
-    <img src="http://skypolatory.cyberplant.net/icon/animated/emoticon-0110-tongueout.gif" width="30">
-</div>
-    
+    <div class="text-center">
+        <img src="http://skypolatory.cyberplant.net/icon/animated/emoticon-0110-tongueout.gif" width="30">
+    </div>
+
     <?php
 }
 ?>
