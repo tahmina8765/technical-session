@@ -14,16 +14,16 @@
     )));
     $options = array(
         ''   => '--Select--',
-        '0'  => 'N/A',
-        '1'  => 'Less than Unsatisfied',
-        '2'  => 'Unsatisfied',
-        '3'  => 'More than Unsatisfied',
-        '4'  => 'Acceptable',
-        '5'  => 'More than Acceptable',
-        '6'  => 'Good',
-        '7'  => 'Very Good',
-        '8'  => 'Nearly Excellent',
-        '9'  => 'Excellent',
+        '0'  => '0 - N/A',
+        '1'  => '1 - Less than Unsatisfied',
+        '2'  => '2 - Unsatisfied',
+        '3'  => '3 - More than Unsatisfied',
+        '4'  => '4 - Acceptable',
+        '5'  => '5 - More than Acceptable',
+        '6'  => '6 - Good',
+        '7'  => '7 - Very Good',
+        '8'  => '8 - Nearly Excellent',
+        '9'  => '9 - Excellent',
         '10' => 'Above Excellent',
     );
     ?>
