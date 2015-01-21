@@ -488,11 +488,11 @@ class TrainingsController extends TrainingManagerAppController
         $this->loadModel('User');
 
         $this->Score->recursive = 0;
-        $scores = $this->Score->find('all', array(
+        $scores                 = $this->Score->find('all', array(
             'conditions' => array(
                 'Score.training_id' => $trainingId,
             ),
-            'order' => array(
+            'order'      => array(
                 'User.name' => 'asc'
             )
         ));
@@ -534,9 +534,6 @@ class TrainingsController extends TrainingManagerAppController
             'fields'     => 'Score.user_id',
             'conditions' => array(
                 'Score.training_id' => $trainingId,
-            ),
-            'order' => array(
-                'User.name' => 'asc'
             )
         ));
         $exist      = array();
@@ -552,6 +549,9 @@ class TrainingsController extends TrainingManagerAppController
                     'User.group_id' => $this->hostGroup,
                     'User.is_disabled IS NULL'
                 )
+            ),
+            'order'      => array(
+                'User.name' => 'asc'
             )
         ));
         $this->set(compact('trainings', 'users', 'scores'));
@@ -616,27 +616,27 @@ class TrainingsController extends TrainingManagerAppController
         } else {
             throw new NotFoundException(__('Invalid user'));
         }
-        
+
         // Validate Date
         $datefail = false;
         $training = $this->Training->find('first', array('conditions' => array('Training.' . $this->Training->primaryKey => $trainingId)));
 //        echo strtotime($training['Training']['schedule']);
 //        echo "<br>";
 //        echo strtotime(date('Y-m-d'));
-        if(strtotime($training['Training']['schedule']) != strtotime(date('Y-m-d'))){
+        if (strtotime($training['Training']['schedule']) != strtotime(date('Y-m-d'))) {
             $datefail = true;
             $this->Session->setFlash(__('Date Expired.'), 'error');
         }
-        
-        
-        
+
+
+
 
         $options = array('conditions' => array(
                 'Score.user_id'     => $userId,
                 'Score.training_id' => $trainingId,
         ));
         $score   = $this->Score->find('first', $options);
-        if(!empty($score)){
+        if (!empty($score)) {
             $this->Session->setFlash(__('You have already rated this session.'), 'error');
         }
 
