@@ -16,7 +16,6 @@ if (empty($score) && !$datefail) {
                 'error'   => array('attributes' => array('wrap' => 'span', 'class' => 'help-inline')),
         )));
         $options = array(
-            '0'  => 'N/A',
             '1'  => 'Very Unsatisfied',
             '2'  => 'Unsatisfied',
             '3'  => 'Nearly Acceptable',
