@@ -2,7 +2,11 @@
     margin-bottom: 0px;    
 }
 .jumbotron{
-    background: url('../img/bg1.jpg') $brand_gw2;
+    background: url('../img/bg1.jpg') no-repeat center center fixed $brand_gw2;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
     border-bottom: 10px solid #ff0000;
     img{
         border: 15px solid rgba(24, 73, 159, 0.5);

@@ -6868,7 +6868,11 @@ h1, h2, h3 {
 }
 
 .jumbotron {
-  background: url("../img/bg1.jpg") #18499f;
+  background: url("../img/bg1.jpg") no-repeat center center fixed #18499f;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
   border-bottom: 10px solid #ff0000;
 }
 .jumbotron img {
