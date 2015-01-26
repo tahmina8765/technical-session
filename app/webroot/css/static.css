@@ -6818,8 +6818,18 @@ button.close {
   padding: 5px 15px;
 }
 
+.navbar-default {
+  border-top: 0;
+  border-right: 0;
+  border-left: 0;
+  border-radius: 0px;
+  /*    border-color: #ff0000;
+      border-bottom: 5px solid #ff0000;*/
+}
+
 h1, h2, h3 {
   font-family: 'Slabo 27px', serif;
+  color: #18499f;
 }
 
 .topic {
@@ -6858,10 +6868,18 @@ h1, h2, h3 {
 }
 
 .jumbotron {
-  background-color: #18499f;
+  background: url("../img/bg1.jpg") #18499f;
+  border-bottom: 10px solid #ff0000;
+}
+.jumbotron img {
+  border: 15px solid rgba(24, 73, 159, 0.5);
 }
 .jumbotron h3, .jumbotron h1, .jumbotron p {
   color: white;
+  text-shadow: 2px 2px 2px #113573;
+}
+.jumbotron p {
+  padding-top: 20px;
 }
 .jumbotron .btn-rate {
   background: none;

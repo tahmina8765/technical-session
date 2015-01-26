@@ -1,10 +1,18 @@
 .navbar{
-    margin-bottom: 0px;
+    margin-bottom: 0px;    
 }
 .jumbotron{
-    background-color: #18499f;
+    background: url('../img/bg1.jpg') $brand_gw2;
+    border-bottom: 10px solid #ff0000;
+    img{
+        border: 15px solid rgba(24, 73, 159, 0.5);
+    }
     h3, h1, p{
         color: white;
+        text-shadow: 2px 2px 2px darken($brand_gw2, 10%);
+    }
+    p{
+        padding-top: 20px;
     }
     .btn-rate{
         background: none;
