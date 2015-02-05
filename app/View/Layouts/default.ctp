@@ -1,4 +1,5 @@
 <?php
+
 $siteDescription = __d('cake_dev', 'Technical Session - genweb2');
 ?>
 <!DOCTYPE html>
@@ -36,5 +37,12 @@ $siteDescription = __d('cake_dev', 'Technical Session - genweb2');
 //            );
             ?>
         </div>
+        <div class="container">
+            <div class="row">
+                <p style="text-align: left;">Copyright &copy; <?php echo date('Y'); ?>                    
+                    Genweb2 Ltd. - All Rights Reserved.</p>
+            </div>
+        </div>
+
     </body>
 </html>
