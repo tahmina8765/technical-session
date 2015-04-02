@@ -108,7 +108,7 @@ CakeLog::config('error', array(
 ));
 
 App::import('Vendor', array('file' => 'autoload'));
-define('DOCUMENTS', WWW_ROOT . DS);
+define('DOCUMENTS', WWW_ROOT);
 
 CakePlugin::load('DebugKit');
 CakePlugin::load('Cauth');
