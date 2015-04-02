@@ -82,7 +82,7 @@
                             ?>
                         <span class="star full"></span>
                             <?php
-                            }else{
+                            }else if($remaining>-5){
                             ?>
                         <span class="star half"></span>
                             <?php    
@@ -95,11 +95,6 @@
                             <?php
                         }
                         ?>
-                        
-<!--                        <span class="star half"></span>
-                        <span class="star"></span>-->
-
-
                     </div>
                     <?php
                     }
