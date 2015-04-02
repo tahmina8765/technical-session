@@ -102,8 +102,12 @@
                     }
                     ?>
                     <div class="date-user">
+                        <?php
+                            if(date('Y', strtotime($training['Training']['schedule'])) > 2014){
+                        ?>
                         Rating - <span class="score"><?php echo h($training['Training']['score']); ?></span> | 
                             <?php
+                            }
                             echo $this->Time->format(
                                         'M d, Y', $training['Training']['schedule'], null
                                 );
