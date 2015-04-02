@@ -106,7 +106,10 @@ CakeLog::config('error', array(
 	'types' => array('warning', 'error', 'critical', 'alert', 'emergency'),
 	'file' => 'error',
 ));
+
 App::import('Vendor', array('file' => 'autoload'));
+define('DOCUMENTS', WWW_ROOT . DS);
+
 CakePlugin::load('DebugKit');
 CakePlugin::load('Cauth');
 CakePlugin::load('AclExtras');

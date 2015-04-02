@@ -18,7 +18,7 @@ class TrainingsController extends TrainingManagerAppController
      * @var array
      */
     private $hostGroup = 2;
-    public $components = array('Paginator', 'Session');
+    public $components = array('Paginator', 'Session', 'TrainingManager.Image');
     public $paginate   = array(
         'limit' => 10,
         'order' => array(
@@ -92,7 +92,7 @@ class TrainingsController extends TrainingManagerAppController
             case 'archive':
                 $this->Paginator->settings['order']['Training.schedule']           = 'desc';
                 $this->Paginator->settings['conditions'][]['Training.schedule <']  = $today;
-                $title                                                             = 'Session Archive List';
+                $title                                                             = 'Archives';
                 break;
             case 'upcoming':
                 $this->Paginator->settings['order']['Training.schedule']           = 'asc';
@@ -307,6 +307,16 @@ class TrainingsController extends TrainingManagerAppController
             $postData = $this->request->data;
             $this->Training->create();
 
+            if ($postData['Training']['upload']['name'] != '') {
+                $document    = time() . '_' . $postData['Training']['upload']['name'];
+                $destination = DOCUMENTS . 'documents' . DS;
+
+                move_uploaded_file($postData['Training']['upload']['tmp_name'], $destination . $document);
+                $postData['Training']['upload'] = $document;
+            } else {
+                $postData['Training']['upload'] = '';
+            }
+
             if (!empty($postData['TrainingUser']['user_id'])) {
                 $user_ids = array();
                 foreach ($postData['TrainingUser']['user_id'] as $key => $val) {
@@ -367,6 +377,8 @@ class TrainingsController extends TrainingManagerAppController
             throw new NotFoundException(__('Invalid training'));
         }
 
+        $oldData = $this->Training->read(null, $id);
+
         $users = $this->User->find('list', array(
             'fields'     => array('User.id', 'User.name'),
             'conditions' => array(
@@ -376,8 +388,22 @@ class TrainingsController extends TrainingManagerAppController
 
         if ($this->request->is('put')) {
 
-            $postData = $this->request->data;
+
+            $postData      = $this->request->data;
             $this->Training->create();
+            $removeOldData = '';
+            $destination   = DOCUMENTS . 'documents' . DS;
+
+            if ($postData['Training']['upload']['name'] != '') {
+                $document = time() . '_' . $postData['Training']['upload']['name'];
+
+                move_uploaded_file($postData['Training']['upload']['tmp_name'], $destination . $document);
+                $postData['Training']['upload'] = $document;
+                $removeOldData                  = $oldData['Training']['upload'];
+            } else {
+                $postData['Training']['upload'] = $oldData['Training']['upload'];
+            }
+
 
             $existingTrainingUsers = $this->TrainingUser->find('list', array(
                 'fields'     => array('TrainingUser.id', 'TrainingUser.user_id'),
@@ -414,11 +440,11 @@ class TrainingsController extends TrainingManagerAppController
             $datasource = $this->Training->getDataSource();
             try {
                 $datasource->begin();
+
                 if (!$this->Training->save($postData)) {
                     throw new Exception();
                 }
                 $training_id = $id;
-
                 if (!empty($postData['TrainingUser'])) {
                     foreach ($postData['TrainingUser'] as $key => $val) {
                         if (!empty($removeTrainingUsersKey)) {
@@ -439,6 +465,13 @@ class TrainingsController extends TrainingManagerAppController
                     foreach ($removeTrainingUsersKey as $key) {
                         $this->TrainingUser->id = $key;
                         $this->TrainingUser->delete();
+                    }
+                }
+
+                if (!empty($removeOldData)) {
+                    $file = $destination . $removeOldData;
+                    if (file_exists($file)) {
+                        unlink($file);
                     }
                 }
 

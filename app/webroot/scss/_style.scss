@@ -6,8 +6,8 @@
     border-right: 0;
     border-left: 0;
     border-radius: 0px;
-/*    border-color: #ff0000;
-    border-bottom: 5px solid #ff0000;*/
+    /*    border-color: #ff0000;
+        border-bottom: 5px solid #ff0000;*/
 }
 h1, h2, h3{
     font-family: 'Slabo 27px', serif;
@@ -40,4 +40,35 @@ h1, h2, h3{
         }
     }
 
+}
+
+.table-archives{
+    .title{
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .date-user{
+        font-size: 12px;
+        color: #777;
+        .score{
+            color: black;
+            font-weight: bold;
+        }
+    }
+    .download{
+        font-size: 12px;
+        font-weight: normal;
+    } 
+}
+.star{
+    width: 13px;
+    height: 12px;
+    background: url('../img/star.png');
+    display: inline-block;
+    &.full{
+        background-position: 13px 0;
+    }
+    &.half{
+        background-position: 40px 0;
+    }    
 }
