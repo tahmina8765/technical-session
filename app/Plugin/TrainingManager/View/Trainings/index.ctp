@@ -9,14 +9,14 @@
         case 'upcoming':
             foreach ($trainings as $training) {
                 ?>
-                <div class="panel panel-default">    
-                    <div class="panel-heading">
-                        <strong><?php echo h($training['Training']['title']); ?></strong>
-                    </div>
-                    <div class="panel-body">         
-                        <div class="row">
-                            <div class="col-sm-9">
-                                <p><?php
+    <div class="panel panel-default">    
+        <div class="panel-heading">
+            <strong><?php echo h($training['Training']['title']); ?></strong>
+        </div>
+        <div class="panel-body">         
+            <div class="row">
+                <div class="col-sm-9">
+                    <p><?php
                                     if (!empty($training['TrainingUser'])) {
                                         $users = array();
                                         foreach ($training['TrainingUser'] as $user) {
@@ -28,12 +28,12 @@
 
                                     if ($display_rank) {
                                         ?>
-                                        <span class="badge"><?php echo h($training['Training']['point']); ?></span>
-                                        <br>
+                        <span class="badge"><?php echo h($training['Training']['point']); ?></span>
+                        <br>
                                         <?php
                                     }
                                     ?>
-                                    <i>
+                        <i>
                                         <?php
                                         if (!empty($training['Training']['schedule'])) {
 
@@ -42,87 +42,108 @@
                                             );
                                         }
                                         ?>
-                                    </i>
-                                </p>
-                            </div>
-                        </div>
-
-                    </div>
+                        </i>
+                    </p>
                 </div>
+            </div>
+
+        </div>
+    </div>
                 <?php
             }
             break;
         default:
             ?>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th><?php echo $this->Paginator->sort('schedule'); ?></th>
-                        <th><?php echo $this->Paginator->sort('title'); ?></th>                   
-                        <th><?php echo $this->Paginator->sort('score'); ?></th>                        
-                        <th>Download</th>
-                    </tr>
-                </thead>
-                <tbody>
+    <div class="row">
+        <div class="col-lg-12 text-muted" style="font-size: 12px;">Sort By <?php echo $this->Paginator->sort('schedule'); ?> | <?php echo $this->Paginator->sort('title'); ?> | <?php echo $this->Paginator->sort('score'); ?></div>
+    </div>
+    <br>
+    <table class="table table-bordered table-archives">
+        <tbody>
                     <?php
                     $sl = 1;
                     foreach ($trainings as $training):
                         ?>
-                        <tr> 
-                            <td><?php
-                                echo $this->Time->format(
-                                        'M dS, Y', $training['Training']['schedule'], null
-                                );
-                                //          echo h($training['Training']['schedule']); 
-                                ?>
-                            </td>
-                            <td><?php echo h($training['Training']['title']); ?><br><em style="font-size: 12px; color: #777;">
+            <tr>
+                <td>
+                    <div class="title"><?php echo h($training['Training']['title']); ?></div>
+
+                    <?php
+                    if(date('Y', strtotime($training['Training']['schedule'])) > 2014){
+                    ?>
+                    <div class="rating">
+                        <?php
+                        $score  = $training['Training']['score'];
+                        $star = 10;
+                        
+                        for($i = 0; $i < $score; $i+=10){
+                            $remaining = $score - ($i+10);
+                            if($remaining > 0){
+                            ?>
+                        <span class="star full"></span>
                             <?php
-                                if (!empty($training['TrainingUser'])) {
-                                    $users = array();
-                                    foreach ($training['TrainingUser'] as $user) {
-                                        $users[] = $user['User']['name'];
-                                    }
-                                    $user = implode(', ', $users);
-                                    echo $user;
-                                }
-                                ?></em></td>
+                            }else{
+                            ?>
+                        <span class="star half"></span>
+                            <?php    
+                            }
+                            $star--;
+                        }
+                        for($i = 1; $i <= $star; $i++){
+                            ?>
+                        <span class="star"></span>
+                            <?php
+                        }
+                        ?>
+                        
+<!--                        <span class="star half"></span>
+                        <span class="star"></span>-->
 
-                            <td class="text-center"><?php
-                                $score  = $training['Training']['score'];
-                                $imgsrc = '';
-                                if (!empty($score)) {
-                                    if ($score < 40) {
-                                        $imgsrc = 'http://skypesmileyscodes.com/wp-content/uploads/2015/01/sadsmile.png';
-                                    } else if ($score < 60) {
-                                        $imgsrc = 'http://skypesmileyscodes.com/wp-content/uploads/2015/01/smile.png';
-                                    } else if ($score < 80) {
-                                        $imgsrc = 'http://skypesmileyscodes.com/wp-content/uploads/2015/01/bigsmile.png';
-                                    } else {
-                                        $imgsrc = 'http://skypesmileyscodes.com/wp-content/uploads/2015/01/heart.png';
-                                    }
-                                }
-                                if (!empty($imgsrc)) {
-                                    ?>
-                                    <img src="<?php echo $imgsrc; ?>"><br>
-                                    <?php
-                                }
-                                ?>
 
-                                <?php echo h($training['Training']['score']); ?></td>
-                            <td></td>
-                        </tr>
+                    </div>
+                    <?php
+                    }
+                    ?>
+                    <div class="date-user">
+                        Rating - <span class="score"><?php echo h($training['Training']['score']); ?></span> | 
+                            <?php
+                            echo $this->Time->format(
+                                        'M d, Y', $training['Training']['schedule'], null
+                                );
+                            echo ' - <strong>';    
+                            if (!empty($training['TrainingUser'])) {
+                                $users = array();
+                                foreach ($training['TrainingUser'] as $user) {
+                                    $users[] = $user['User']['name'];
+                                }
+                                $user = implode(', ', $users);
+                                echo $user;
+                            }
+                            echo '<strong>';    
+                            ?>
+                            
+                    </div>
+                    <div class="download">                        
+                       <?php                
+                            echo empty($training['Training']['upload']) ? "" : $this->Html->link(__('<span class="glyphicon glyphicon-download"></span> Download Material', true), Configure::read('Site.url') . 'documents/' . $training['Training']['upload'], array ('escape' => false, 'target' => '_blank'));                                       
+                        ?> 
+                    </div>
+
+                </td>
+                
+
+            </tr>
                     <?php endforeach; ?>
-                </tbody>
-            </table>
-            <p>
+        </tbody>
+    </table>
+    <p>
                 <?php
                 echo $this->Paginator->counter(array(
                     'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
                 ));
                 ?>	</p>
-            <nav>
-                <ul class="pagination">
+    <nav>
+        <ul class="pagination">
                     <?php
                     echo $this->Paginator->first('&lsaquo;', array('tag' => 'li', 'title' => __('First page'), 'escape' => false));
                     echo $this->Paginator->prev('&laquo;', array('tag' => 'li', 'title' => __('Previous page'), 'disabledTag' => 'span', 'escape' => false), null, array('tag' => 'li', 'disabledTag' => 'span', 'escape' => false, 'class' => 'disabled'));
@@ -131,8 +152,8 @@
                     echo $this->Paginator->last('&rsaquo;', array('tag' => 'li', 'title' => __('First page'), 'escape' => false));
                     ?>
 
-                </ul>
-            </nav>
+        </ul>
+    </nav>
             <?php
             break;
     }
