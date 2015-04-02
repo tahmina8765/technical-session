@@ -13,7 +13,7 @@ if (!empty($trainings)) {
         <div class="jumbotron">
             <div class="container">
                 <?php
-                echo $this->Html->image($training['Training']['image'], array('class' => 'pull-right img-rounded'));
+                echo (!empty($training['Training']['image']))?$this->Html->image($training['Training']['image'], array('class' => 'pull-right img-rounded')):'';
                 $schedule   = $training['Training']['schedule'];
                 $votingtime = $schedule . ' 17:00:00';
 
