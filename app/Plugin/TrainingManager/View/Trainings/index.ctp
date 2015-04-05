@@ -78,7 +78,7 @@
                         
                         for($i = 0; $i < $score; $i+=10){
                             $remaining = $score - ($i+10);
-                            if($remaining > 0){
+                            if($remaining >= 0){
                                 $star--;
                             ?>
                         <span class="star full"></span>
