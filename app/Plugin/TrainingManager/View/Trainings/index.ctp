@@ -79,15 +79,17 @@
                         for($i = 0; $i < $score; $i+=10){
                             $remaining = $score - ($i+10);
                             if($remaining >= 0){
+                                $star--;
                             ?>
                         <span class="star full"></span>
                             <?php
                             }else if($remaining>-5){
+                                $star--;
                             ?>
                         <span class="star half"></span>
                             <?php    
                             }
-                            $star--;
+                            
                         }
                         for($i = 1; $i <= $star; $i++){
                             ?>
@@ -100,8 +102,12 @@
                     }
                     ?>
                     <div class="date-user">
+                        <?php
+                            if(date('Y', strtotime($training['Training']['schedule'])) > 2014){
+                        ?>
                         Rating - <span class="score"><?php echo h($training['Training']['score']); ?></span> | 
                             <?php
+                            }
                             echo $this->Time->format(
                                         'M d, Y', $training['Training']['schedule'], null
                                 );
