@@ -20,6 +20,20 @@ $siteDescription = __d('cake_dev', 'Technical Session - genweb2');
         echo $this->fetch('css');
         echo $this->fetch('script');
         ?>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script>
+            $(function () {
+                $(".datepicker").datepicker({
+                    showOtherMonths: true,
+                    selectOtherMonths: true,
+                    changeMonth: true,
+                    changeYear: true,
+                    dateFormat: "yy-mm-dd"
+
+                });
+            });
+        </script>
     </head>
     <body>
         <?php echo $this->element('top_nev'); ?>

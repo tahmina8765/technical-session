@@ -123,8 +123,8 @@
                             echo '<strong>';    
                             ?>
                             
-                    </div>
                     <div class="download">                        
+                    </div>
                        <?php                
                             echo empty($training['Training']['upload']) ? "" : $this->Html->link(__('<span class="glyphicon glyphicon-download"></span> Download Material', true), Configure::read('Site.url') . 'documents/' . $training['Training']['upload'], array ('escape' => false, 'target' => '_blank'));                                       
                         ?> 
