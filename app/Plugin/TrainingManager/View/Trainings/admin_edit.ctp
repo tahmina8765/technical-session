@@ -24,7 +24,7 @@
         }
         echo $this->Form->input('id');
         echo $this->Form->input('title', array('type' => 'text'));
-        echo $this->Form->input('schedule');
+        echo $this->Form->input('schedule', array('type' => 'text', 'class' => 'datepicker form-control'));
         echo $this->Form->input('image'); 
         echo $this->Form->input('content');
         echo $this->Form->input('upload', array(

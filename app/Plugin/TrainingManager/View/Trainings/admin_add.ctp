@@ -1,5 +1,4 @@
 <div class="trainings form">
-
     <?php
     echo $this->Form->create('Training', array(
         'type' => 'file',
@@ -19,7 +18,7 @@
         <legend><?php echo __('Admin:: New Training'); ?></legend>
         <?php
         echo $this->Form->input('title', array('type' => 'text'));
-        echo $this->Form->input('schedule');
+        echo $this->Form->input('schedule', array('type' => 'text', 'class' => 'datepicker form-control'));
         echo $this->Form->input('image');
         echo $this->Form->input('content');
         echo $this->Form->input('upload', array(

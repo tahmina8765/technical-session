@@ -78,7 +78,7 @@
                         
                         for($i = 0; $i < $score; $i+=10){
                             $remaining = $score - ($i+10);
-                            if($remaining > 0){
+                            if($remaining >= 0){
                             ?>
                         <span class="star full"></span>
                             <?php
@@ -117,8 +117,8 @@
                             echo '<strong>';    
                             ?>
                             
-                    </div>
                     <div class="download">                        
+                    </div>
                        <?php                
                             echo empty($training['Training']['upload']) ? "" : $this->Html->link(__('<span class="glyphicon glyphicon-download"></span> Download Material', true), Configure::read('Site.url') . 'documents/' . $training['Training']['upload'], array ('escape' => false, 'target' => '_blank'));                                       
                         ?> 
